@@ -79,8 +79,8 @@
         }
         /* Dark mode app title */
         .calculator.dark-mode .app-title {
-            background-color: #7c2d12; /* Tailwind orange-800 */
-            color: #fed7aa; /* Tailwind orange-200 */
+            background-color: #1f2937; /* Tailwind orange-800 */
+            color: #ffffff; /* Tailwind orange-200 */
         }
         .app-title-text {
             flex-grow: 1; 
@@ -647,7 +647,7 @@
                 // modalContentElement.classList.add('dark-mode'); // Using descendant selector now
                 darkModeToggleButton.textContent = '☼'; // Sun icon
                 darkModeToggleButton.title = "Toggle Light Mode";
-                if (uaiLogo) uaiLogo.style.filter = 'invert(0.9) hue-rotate(180deg) saturate(0.5) brightness(1.2)'; // Adjusted filter for better visibility
+               
             } else {
                 document.body.classList.remove('dark-mode');
                 calculatorElement.classList.remove('dark-mode');
