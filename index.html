@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArchiCalc Beta 1.4</title> <link rel="icon" href=" CalcIcon.png" onerror="this.href='https://placehold.co/16x16/f97316/ffffff?text=AC'">
+
+    <meta name="theme-color" content="#f97316" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1f2937" media="(prefers-color-scheme: dark)">
+
+    <title>ArchiCalc Beta 1.4</title>
+    <link rel="icon" href=" CalcIcon.png" onerror="this.href='https://placehold.co/16x16/f97316/ffffff?text=AC'">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f97316'%3E%3Cpath d='M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z'/%3E%3Cpath d='M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z'/%3E%3C/svg%3E" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Your CSS styles here */
+    <style>
 /* Base body styles */
-body {
+html, body { /* Apply to html as well for 100% height propagation */
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent body from scrolling, especially on mobile */
             font-family: 'Inter', sans-serif;
             background-color: #f9fafb; /* Light mode default */
-            display: flex;
-            align-items: center; /* Center horizontally on desktop */
-            justify-content: center; /* Center horizontally on desktop */
-            min-height: 100vh;
-            height: 100vh; /* Ensure body takes full viewport height */
-            padding: 0;   /* Remove padding for true full screen on mobile */
-            margin: 0;    /* Ensure no default margin */
-            box-sizing: border-box;
-            transition: background-color 0.3s ease;
-            overflow: hidden; /* Prevent scrollbars on body for mobile full screen */
+            box-sizing: border-box; /* Apply box-sizing universally */
+        }
+        *, *::before, *::after {
+            box-sizing: inherit; /* Ensure all elements inherit box-sizing */
         }
 
-        /* Dark mode body styles */
         body.dark-mode {
             background-color: #111827; /* Dark mode background */
         }
@@ -33,15 +37,16 @@ body {
             width: 100%;
             max-width: 400px; /* Max width for wider screens, effective on desktop */
             background-color: #ffffff; /* Light mode */
-            border: 1px solid #d1d5db; /* Light mode border, will be less visible on mobile full screen */
+            border: 1px solid #d1d5db; /* Light mode border */
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
             overflow: hidden; /* Crucial to prevent inner content from breaking layout */
             display: flex;
             flex-direction: column;
-            height: 100vh; /* Full viewport height by default (for mobile) */
+            height: 100%; /* Full height of its parent (body) */
+            margin-left: auto; /* Center on desktop if body is not flex centering */
+            margin-right: auto; /* Center on desktop */
             border-radius: 0; /* No radius for mobile full screen */
             position: relative;
-            box-sizing: border-box;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
@@ -53,15 +58,18 @@ body {
         /* Desktop/larger screen specific styles */
         @media (min-width: 640px) { /* sm breakpoint */
             body {
-                padding: 1rem; /* Add padding back to body for desktop to center calculator */
-                overflow: auto; /* Allow body scroll if needed on desktop */
+                display: flex; /* Use flex on body for desktop to easily center calculator */
+                align-items: center;
+                justify-content: center;
+                padding: 1rem; /* Add padding back to body for desktop */
+                 /* overflow: auto; /* Allow body scroll if needed on desktop - might not be needed if calc is max-height */
             }
             .calculator {
-                height: auto; /* Let content and min/max height define size */
+                height: auto; /* Let content and min/max height define size on desktop */
                 min-height: 700px; /* A sensible minimum height for desktop */
                 max-height: 90vh; /* Prevent it from being overly tall on large monitors */
                 border-radius: 0.5rem; /* Restore border-radius for desktop */
-                /* border-width: 1px; /* Ensure border is consistently visible */
+                /* margin-left and margin-right auto will center it if body isn't flex centering */
             }
         }
 
@@ -77,12 +85,11 @@ body {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 35px; /* Fixed height */
-            box-sizing: border-box;
+            height: 50px; /* Fixed height */
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .calculator.dark-mode .app-title {
-            background-color: #1f2937; /* Use a darker shade for dark mode title */
+            background-color: #1f2937;
             color: #ffffff;
         }
         .app-title-text { flex-grow: 1; text-align: center; }
@@ -93,20 +100,24 @@ body {
             display: flex;
             flex-direction: column; /* History tape appears above display container in source */
             flex-grow: 1;          /* This section takes up available vertical space */
-            overflow: hidden;      /* Important to contain children and prevent unexpected scroll */
-            box-sizing: border-box;
+            flex-shrink: 1;        /* Allow this section to shrink if space is tight */
+            flex-basis: 0;         /* Important for proper shrinking/growing with min-height */
+            overflow: hidden;      /* Important to contain children */
+            min-height: 0;         /* Allows shrinking below intrinsic content size */
         }
 
         .history-tape {
             background-color: #f3f4f6;
             border-bottom: 1px solid #d1d5db;
             flex-grow: 1;          /* CRITICAL: History tape takes all available space in .top-section */
+            flex-shrink: 1;        /* Allow history tape to shrink */
+            flex-basis: 0;         /* Works with grow/shrink and min-height */
             overflow-y: auto;      /* Scroll for history content only if it exceeds its calculated space */
             padding: 5px 15px;
             color: #6b7280;
             font-size: 0.75rem;
             text-align: right;
-            box-sizing: border-box;
+            min-height: 0;         /* Allows shrinking below intrinsic content size of its children */
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -124,7 +135,6 @@ body {
         .display-container {
             background-color: #e5e7eb;
             border-bottom: 1px solid #d1d5db; /* Separator line */
-            min-height: 70px;
             height: 80px;      /* Fixed height for display area */
             padding: 10px 15px;
             color: #1f2937;
@@ -132,7 +142,6 @@ body {
             flex-direction: column;
             justify-content: center;
             align-items: flex-end;
-            box-sizing: border-box;
             word-break: break-all;
             flex-shrink: 0; /* Prevent display from shrinking */
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -175,7 +184,6 @@ body {
             background-color: #d1d5db; /* Grid lines light mode */
             flex-shrink: 0; /* Prevent button grid from shrinking */
             height: 420px;  /* Fixed height for 7 rows of 60px buttons */
-            box-sizing: border-box;
             transition: background-color 0.3s ease;
         }
         .calculator.dark-mode .buttons {
@@ -196,16 +204,14 @@ body {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 5px; /* Adjusted padding for two-line buttons */
-            box-sizing: border-box;
-            line-height: 1.2; /* Adjust line height for multi-line text */
+            padding: 5px;
+            line-height: 1.2;
         }
-        /* Dark mode default button */
         .calculator.dark-mode .btn {
-            background-color: #374151; /* Tailwind gray-600 */
-            color: #f9fafb; /* Tailwind gray-50 */
+            background-color: #374151;
+            color: #f9fafb;
         }
-        .calculator.dark-mode .btn:hover { background-color: #4b5563; } /* Slightly lighter gray for hover in dark */
+        .calculator.dark-mode .btn:hover { background-color: #4b5563; }
         .calculator.dark-mode .btn:active { background-color: #525a66; }
 
 
@@ -214,12 +220,10 @@ body {
             margin-left: 0.25rem;
             opacity: 0.8;
         }
-        /* Dark mode shortcut text */
         .calculator.dark-mode .shortcut {
             opacity: 0.7;
-            color: #cbd5e1; /* Tailwind slate-300 */
+            color: #cbd5e1;
         }
-
 
         .btn:hover { background-color: #e5e7eb; }
         .btn:active { background-color: #d1d5db; }
@@ -239,7 +243,7 @@ body {
         .btn-equal:hover { background-color: #155e75; }
         .btn-mem { background-color: #eef2ff; color: #4338ca; }
         .btn-mem:hover { background-color: #c7d2fe; }
-        .btn-frac { background-color: #e0f2fe; color: #075985; } /* Same as btn-unit for consistency */
+        .btn-frac { background-color: #e0f2fe; color: #075985; }
         .btn-frac:hover { background-color: #bae6fd; }
 
         /* Button Color Styles - Dark Mode */
@@ -249,7 +253,7 @@ body {
         .calculator.dark-mode .btn-unit:hover { background-color: #075985; }
         .calculator.dark-mode .btn-conv { background-color: #1e40af; color: #dbeafe; }
         .calculator.dark-mode .btn-conv:hover { background-color: #1e3a8a; }
-        .calculator.dark-mode .btn-ctrl { background-color: #1f2937; color: #d1d5db; } /* Adjusted from too dark */
+        .calculator.dark-mode .btn-ctrl { background-color: #1f2937; color: #d1d5db; }
         .calculator.dark-mode .btn-ctrl:hover { background-color: #525a66; }
         .calculator.dark-mode .btn-backspace-yellow { background-color: #713f12; color: #fefce8; }
         .calculator.dark-mode .btn-backspace-yellow:hover { background-color: #854d0e; }
@@ -257,9 +261,8 @@ body {
         .calculator.dark-mode .btn-equal:hover { background-color: #083344; }
         .calculator.dark-mode .btn-mem { background-color: #312e81; color: #e0e7ff; }
         .calculator.dark-mode .btn-mem:hover { background-color: #3730a3; }
-        .calculator.dark-mode .btn-frac { background-color: #0c4a6e; color: #e0f2fe; } /* Same as btn-unit */
+        .calculator.dark-mode .btn-frac { background-color: #0c4a6e; color: #e0f2fe; }
         .calculator.dark-mode .btn-frac:hover { background-color: #075985; }
-
 
         /* Span button across columns */
         .col-span-1 { grid-column: span 1 / span 1; }
@@ -267,7 +270,6 @@ body {
         .col-span-3 { grid-column: span 3 / span 3; }
         .col-span-4 { grid-column: span 4 / span 4; }
         .col-span-5 { grid-column: span 5 / span 5; }
-
 
         .flashing { animation: flash 1s infinite alternate; }
         @keyframes flash { from { opacity: 1; } to { opacity: 0.5; } }
@@ -282,13 +284,13 @@ body {
         .modal-content {
             background-color: white;
             padding: 1.5rem; border-radius: 0.5rem;
-            max-width: 600px; max-height: 80vh;
+            max-width: 600px; max-height: 80vh; /* Modal can scroll if content exceeds viewport */
             overflow-y: auto; position: relative;
             color: #374151;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .calculator.dark-mode .modal-content {
-            background-color: #262f3d; /* Darker modal background */
+            background-color: #262f3d;
             color: #d1d5db;
         }
          .modal-content h1, .modal-content h2 {
@@ -327,6 +329,7 @@ body {
          }
          .modal-close-btn:hover { color: #6b7280; }
          .calculator.dark-mode .modal-close-btn:hover { color: #9ca3af; }
+
 
     </style>
 </head>
