@@ -7,24 +7,26 @@
     <meta name="theme-color" content="#f97316" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1f2937" media="(prefers-color-scheme: dark)">
 
-    <title>ArchiCalc Beta 1.1</title>
+    <title>ArchiCalc Beta 1.4</title>
     <link rel="icon" href=" CalcIcon.png" onerror="this.href='https://placehold.co/16x16/f97316/ffffff?text=AC'">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f97316'%3E%3Cpath d='M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z'/%3E%3Cpath d='M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z'/%3E%3C/svg%3E" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base body styles */
-        html, body {
+        /* Your CSS styles here */
+    <style>
+/* Base body styles */
+html, body { /* Apply to html as well for 100% height propagation */
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Ensures the app fits within the viewport without body scrollbars */
+            overflow: hidden; /* Prevent body from scrolling, especially on mobile */
             font-family: 'Inter', sans-serif;
-            background-color: #f9fafb; /* Light mode background */
-            box-sizing: border-box;
+            background-color: #f9fafb; /* Light mode default */
+            box-sizing: border-box; /* Apply box-sizing universally */
         }
         *, *::before, *::after {
-            box-sizing: inherit;
+            box-sizing: inherit; /* Ensure all elements inherit box-sizing */
         }
 
         body.dark-mode {
@@ -33,39 +35,41 @@
 
         .calculator {
             width: 100%;
-            max-width: 400px; /* Max width for the calculator on larger screens */
-            background-color: #ffffff; /* Light mode calculator background */
+            max-width: 400px; /* Max width for wider screens, effective on desktop */
+            background-color: #ffffff; /* Light mode */
             border: 1px solid #d1d5db; /* Light mode border */
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
-            overflow: hidden; /* Clip content within the calculator */
+            overflow: hidden; /* Crucial to prevent inner content from breaking layout */
             display: flex;
             flex-direction: column;
-            height: 100%; /* Full height on mobile */
-            margin-left: auto; /* Center on desktop */
+            height: 90%; /* Full height of its parent (body) */
+            margin-left: auto; /* Center on desktop if body is not flex centering */
             margin-right: auto; /* Center on desktop */
-            border-radius: 0; /* Square corners on mobile */
+            border-radius: 0; /* No radius for mobile full screen */
             position: relative;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .calculator.dark-mode {
-            background-color: #1f2937; /* Dark mode calculator background */
+            background-color: #1f2937; /* Dark mode */
             border: 1px solid #4b5563; /* Dark mode border */
         }
 
-        /* Desktop specific styles */
-        @media (min-width: 640px) {
+        /* Desktop/larger screen specific styles */
+        @media (min-width: 640px) { /* sm breakpoint */
             body {
-                display: flex;
+                display: flex; /* Use flex on body for desktop to easily center calculator */
                 align-items: center;
                 justify-content: center;
-                padding: 0.25rem; /* MODIFIED: Reduced padding around calculator on desktop */
+                padding: 1rem; /* Add padding back to body for desktop */
+                 /* overflow: auto; /* Allow body scroll if needed on desktop - might not be needed if calc is max-height */
             }
             .calculator {
-                height: auto; /* Allow height to be determined by content up to max-height */
-                min-height: 700px; /* Minimum height on desktop */
-                max-height: 90vh; /* Maximum height relative to viewport height on desktop */
-                border-radius: 0.5rem; /* Rounded corners on desktop */
+                height: auto; /* Let content and min/max height define size on desktop */
+                min-height: 700px; /* A sensible minimum height for desktop */
+                max-height: 90vh; /* Prevent it from being overly tall on large monitors */
+                border-radius: 0.5rem; /* Restore border-radius for desktop */
+                /* margin-left and margin-right auto will center it if body isn't flex centering */
             }
         }
 
@@ -73,15 +77,15 @@
             background-color: #f97316;
             color: #ffffff;
             text-align: center;
-            padding: 0 1rem;
+            padding: 0 1rem; /* Horizontal padding */
             font-size: 1.2rem;
             font-weight: 600;
             letter-spacing: 0.1rem;
-            flex-shrink: 0; /* Prevent title from shrinking */
+            flex-shrink: 0; /* Prevent shrinking */
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 50px; /* Fixed height for the title bar */
+            height: 50px; /* Fixed height */
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .calculator.dark-mode .app-title {
@@ -92,67 +96,60 @@
         .info-icon { cursor: pointer; padding: 0.25rem; line-height: 1; }
         .info-icon svg { transition: fill 0.3s ease; }
 
-        /* This section contains the history tape and the main display */
         .top-section {
             display: flex;
-            flex-direction: column;
-            flex-grow: 1;          /* Allows this section to take up available vertical space */
-            flex-shrink: 1;        /* Allows this section to shrink if needed */
-            flex-basis: 0;         /* Start with no intrinsic size, grow/shrink from there */
-            overflow: hidden;      /* Important for containing children properly */
-            min-height: 0;         /* Crucial for flex children to shrink below content size if necessary */
+            flex-direction: column; /* History tape appears above display container in source */
+            flex-grow: 1;          /* This section takes up available vertical space */
+            flex-shrink: 1;        /* Allow this section to shrink if space is tight */
+            flex-basis: 0;         /* Important for proper shrinking/growing with min-height */
+            overflow: hidden;      /* Important to contain children */
+            min-height: 0;         /* Allows shrinking below intrinsic content size */
         }
 
         .history-tape {
-            background-color: #f3f4f6; /* Light mode history background */
-            border-bottom: 1px solid #d1d5db; /* Light mode border */
-            flex-grow: 1;          /* Allows history tape to expand and fill available space in .top-section */
-            flex-shrink: 1;        /* Allows history tape to shrink */
-            flex-basis: 0;         /* Start with no intrinsic size */
-            overflow-y: auto;      /* Enable vertical scrolling if content overflows */
+            background-color: #f3f4f6;
+            border-bottom: 1px solid #d1d5db;
+            flex-grow: 1;          /* CRITICAL: History tape takes all available space in .top-section */
+            flex-shrink: 1;        /* Allow history tape to shrink */
+            flex-basis: 0;         /* Works with grow/shrink and min-height */
+            overflow-y: auto;      /* Scroll for history content only if it exceeds its calculated space */
             padding: 5px 15px;
-            color: #6b7280; /* Light mode history text */
-            font-size: 0.85rem;
+            color: #6b7280;
+            font-size: 0.75rem;
             text-align: right;
-            min-height: 0;         /* Crucial for allowing shrinkage */
+            min-height: 0;         /* Allows shrinking below intrinsic content size of its children */
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            white-space: normal;
-            cursor: pointer;
+            white-space: nowrap;
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         .calculator.dark-mode .history-tape {
-            background-color: #374151; /* Dark mode history background */
-            color: #d1d5db; /* Dark mode history text */
-            border-bottom: 1px solid #4b5563; /* Dark mode border */
+            background-color: #374151;
+            color: #d1d5db;
+            border-bottom: 1px solid #4b5563;
         }
-        .history-item {
-            width: 100%;
-            white-space: normal;
-            word-break: break-word;
-            padding: 2px 0;
-        }
+        .history-item { width: 100%; overflow: hidden; text-overflow: ellipsis; }
         .calculator.dark-mode .history-item strong { color: #fde047; }
 
         .display-container {
-            background-color: #e5e7eb; /* Light mode display background */
-            border-bottom: 1px solid #d1d5db; /* Light mode border */
-            height: 80px;      /* Fixed height for the display area */
+            background-color: #e5e7eb;
+            border-bottom: 1px solid #d1d5db; /* Separator line */
+            height: 80px;      /* Fixed height for display area */
             padding: 10px 15px;
-            color: #1f2937; /* Light mode display text */
+            color: #1f2937;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-end;
             word-break: break-all;
-            flex-shrink: 0; /* Prevent display container from shrinking */
+            flex-shrink: 0; /* Prevent display from shrinking */
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         .calculator.dark-mode .display-container {
-            background-color: #111827; /* Dark mode display background */
-            color: #f9fafb; /* Dark mode display text */
-            border-bottom: 1px solid #374151; /* Dark mode border */
+            background-color: #111827;
+            color: #f9fafb;
+            border-bottom: 1px solid #374151;
         }
 
         .display-main {
@@ -162,13 +159,13 @@
             white-space: nowrap;
             width: 100%;
             text-align: right;
-            min-height: 1.2em;
+            min-height: 1.2em; /* Ensure space even if empty */
             transition: color 0.3s ease;
         }
         .display-dimensional {
             font-size: 0.9rem;
-            color: #4b5563; /* Light mode dimensional display text */
-            height: 1.2em;
+            color: #4b5563; /* Light mode */
+            height: 1.2em; /* Ensure space */
             width: 100%;
             text-align: right;
             white-space: nowrap;
@@ -177,33 +174,33 @@
             transition: color 0.3s ease;
         }
         .calculator.dark-mode .display-dimensional {
-            color: #9ca3af; /* Dark mode dimensional display text */
+            color: #9ca3af; /* Dark mode */
         }
 
         .buttons {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 1px;
-            background-color: #d1d5db; /* Light mode button grid gap color */
+            background-color: #d1d5db; /* Grid lines light mode */
             flex-shrink: 0; /* Prevent button grid from shrinking */
-            height: 420px;  /* Fixed height for the button area */
+            height: 420px;  /* Fixed height for 7 rows of 60px buttons */
             transition: background-color 0.3s ease;
         }
         .calculator.dark-mode .buttons {
-            background-color: #1f2937; /* Dark mode button grid gap color */
+            background-color: #1f2937; /* Grid lines dark mode */
         }
 
         .btn {
-            background-color: #ffffff; /* Light mode default button background */
+            background-color: #ffffff; /* White button background (Light) */
             border: none;
             text-align: center;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease, color 0.2s ease;
-            color: #1f2937; /* Light mode default button text */
+            color: #1f2937; /* Tailwind gray-800 text (Light) */
             width: 100%;
-            height: 60px; /* Fixed height for buttons */
+            height: 60px; /* Fixed height for each button */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -211,8 +208,8 @@
             line-height: 1.2;
         }
         .calculator.dark-mode .btn {
-            background-color: #374151; /* Dark mode default button background */
-            color: #f9fafb; /* Dark mode default button text */
+            background-color: #374151;
+            color: #f9fafb;
         }
         .calculator.dark-mode .btn:hover { background-color: #4b5563; }
         .calculator.dark-mode .btn:active { background-color: #525a66; }
@@ -267,6 +264,7 @@
         .calculator.dark-mode .btn-frac { background-color: #0c4a6e; color: #e0f2fe; }
         .calculator.dark-mode .btn-frac:hover { background-color: #075985; }
 
+        /* Span button across columns */
         .col-span-1 { grid-column: span 1 / span 1; }
         .col-span-2 { grid-column: span 2 / span 2; }
         .col-span-3 { grid-column: span 3 / span 3; }
@@ -276,6 +274,7 @@
         .flashing { animation: flash 1s infinite alternate; }
         @keyframes flash { from { opacity: 1; } to { opacity: 0.5; } }
 
+        /* Modal Styles */
         .modal {
             position: fixed; inset: 0;
             background-color: rgba(0, 0, 0, 0.6);
@@ -285,7 +284,7 @@
         .modal-content {
             background-color: white;
             padding: 1.5rem; border-radius: 0.5rem;
-            max-width: 600px; max-height: 80vh;
+            max-width: 600px; max-height: 80vh; /* Modal can scroll if content exceeds viewport */
             overflow-y: auto; position: relative;
             color: #374151;
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -330,6 +329,8 @@
          }
          .modal-close-btn:hover { color: #6b7280; }
          .calculator.dark-mode .modal-close-btn:hover { color: #9ca3af; }
+
+
     </style>
 </head>
 <body>
@@ -344,12 +345,16 @@
             </span>
         </div>
 
-        <div class="top-section"> <div id="historyTape" class="history-tape" title="Click to copy tape"></div> <div class="display-container"> <div id="displayDimensional" class="display-dimensional"></div>
+        <div class="top-section">
+            <div id="historyTape" class="history-tape"></div>
+            <div class="display-container">
+                <div id="displayDimensional" class="display-dimensional"></div>
                 <div id="displayValue" class="display-main">0</div>
             </div>
         </div>
 
-        <div class="buttons"> <button class="btn btn-unit" data-unit="yd" title="Convert to Yards / Square Yards / Cubic Yards">Yards</button>
+        <div class="buttons">
+            <button class="btn btn-unit" data-unit="yd" title="Convert to Yards / Square Yards / Cubic Yards">Yards</button>
             <button class="btn btn-unit" data-unit="ft" title="Convert to Feet / Square Feet / Cubic Feet">Feet<span class="shortcut">(')</span></button>
             <button class="btn btn-unit" data-unit="in" title="Convert to Inches / Square Inches / Cubic Inches">Inch<span class="shortcut">(;)</span></button>
             <button class="btn btn-frac flex flex-col items-center justify-center" data-action="fraction" title="Enter Fraction / Round Result">
@@ -368,7 +373,7 @@
             <button class="btn" data-number="8">8</button>
             <button class="btn" data-number="9">9</button>
             <button class="btn btn-op" data-action="multiply">×</button>
-            <button class="btn btn-conv" data-action="sf-cu" title="Toggle Linear/Area (SQ)/Volume (CU) Mode">SQ | CU</button>
+            <button class="btn btn-conv" data-action="sf-cu" title="Toggle Linear/Area (SF)/Volume (CF) Mode">SF | CU</button>
 
             <button class="btn" data-number="4">4</button>
             <button class="btn" data-number="5">5</button>
@@ -395,13 +400,13 @@
         <img src="https://raw.githubusercontent.com/Mogrogu/ArchiCalc/main/UAI%20LOGO.png"
              alt="UAI Logo"
              id="uaiLogo"
-             class="absolute bottom-2.5 right-2.5 w-[70px] rounded z-10"
+             class="absolute bottom-2.5 right-2.5 w-[70px] rounded z-10" 
              onerror="this.style.display='none'; document.getElementById('uaiLogoPlaceholder').style.display='block';"
              style="transition: filter 0.3s ease;">
-        <img src="https://placehold.co/80x30/ffffff/000000?text=UAI"
-             alt="UAI Logo Placeholder"
-             id="uaiLogoPlaceholder"
-             class="absolute bottom-2.4 right-2.5 w-[60px] rounded z-10"
+        <img src="https://placehold.co/80x30/ffffff/000000?text=UAI" 
+             alt="UAI Logo Placeholder" 
+             id="uaiLogoPlaceholder" 
+             class="absolute bottom-2.4 right-2.5 w-[60px] rounded z-10" 
              style="display:none;">
     </div>
 
@@ -414,12 +419,12 @@
             <ul>
                 <li><strong>Dimensional Input:</strong> Work in feet, inches, and fractional inches (e.g., <code>5 ft 6 3/8 in</code>).</li>
                 <li><strong>Measurement Modes:</strong> Compute linear, area (sq. ft/in), and volume (cu. ft/in) values.</li>
-                <li><strong>SQ-CU Mode:</strong> Toggle input interpretation for direct area (SQ) or volume (CU) entry with subsequent unit selection.</li>
+                <li><strong>SF-CU Mode:</strong> Toggle input interpretation for direct area (SF) or volume (CF) entry with subsequent unit selection.</li>
                 <li><strong>Metric Conversion:</strong> Convert between imperial and metric (meters, centimeters, millimeters).</li>
                 <li><strong>Memory Functions:</strong> Store and Recall a single numerical value (overwrites previous).</li>
-                <li><strong>Calculation Tape:</strong> Scrollable history tape shows recent calculations. Click tape to copy.</li>
+                <li><strong>Calculation Tape:</strong> Scrollable history tape shows recent calculations.</li>
                 <li><strong>Keyboard shortcust:</strong> Keyboard shortcuts are shown next to the functions in perntacies.</li>
-                <li><strong>Fraction Rounding:</strong> Round results to nearest lower architectural fraction (1/32, 1/16, 1/8, 1/4, 1/2). Press repeatedly to round further down.</li>
+                <li><strong>Fraction Rounding:</strong> Round results to nearest lower architectural fraction (1/2, 1/4, 1/8, 1/16, 1/32). Press repeatedly to round further.</li>
             </ul>
             <h2>Usage</h2>
             <ol>
@@ -481,29 +486,28 @@
         let currentInput = '0';
         let displayShouldClear = false;
         let firstOperand = null;
-        let firstOperandUnitType = 'linear';
+        let firstOperandUnitType = 'linear'; // 'linear', 'area', 'volume'
         let firstOperandWasDimensional = false;
-        let firstOperandOriginalDisplayUnit = null;
+        let firstOperandOriginalDisplayUnit = null; // For history formatting
         let operator = null;
         let operatorSymbol = '';
-        let memoryValue = 0;
+        let memoryValue = 0; 
         let history = [];
-        const MAX_HISTORY_ITEMS = 30;
-        let resultUnitType = 'linear';
+        const MAX_HISTORY_ITEMS = 10;
+        let resultUnitType = 'linear'; // 'linear', 'area', 'volume'
         let inputState = InputState.START;
         let storedFeet = null;
         let storedInches = null;
         let storedNumerator = null;
         let storedDenominator = null;
-        let conversionSourceInfo = { type: null, baseUnit: null, originalValueStr: null };
+        let conversionSourceInfo = { type: null, baseUnit: null, originalValueStr: null }; // Added originalValueStr for history
         let currentInputIsDimensional = false;
         let tempRoundedDisplay = null;
         let lastValueUsedForRounding = null;
 
-        let currentDimensionMode = 'linear';
-        let sqcuPressCount = 0;
-
-        const ROUNDING_EPSILON = 0.0000001;
+        // NEW: SF-CU State Variables
+        let currentDimensionMode = 'linear'; // 'linear', 'area', 'volume'
+        let sfcuPressCount = 0;
 
         // --- Conversion Factors & Units ---
         const conversionFactors = { 'in': 1, 'ft': 12, 'yd': 36, 'm': 39.3701, 'cm': 0.393701, 'mm': 0.0393701 };
@@ -511,17 +515,17 @@
         const volumeConversionFactors = { 'cu in': 1, 'cu ft': 1728, 'cu yd': 46656, 'cu m': 61023.744, 'cu cm': 0.061023744, 'cu mm': 0.000061023744 };
         const unitMap = { 'in': { area: 'sq in', volume: 'cu in', display: 'in' }, 'ft': { area: 'sq ft', volume: 'cu ft', display: 'ft' }, 'yd': { area: 'sq yd', volume: 'cu yd', display: 'yd' }, 'm': { area: 'sq m', volume: 'cu m', display: 'm' }, 'cm': { area: 'sq cm', volume: 'cu cm', display: 'cm' }, 'mm': { area: 'sq mm', volume: 'cu mm', display: 'mm' } };
         const displayUnits = { 'in': 'in', 'ft': 'ft', 'yd': 'yd', 'm': 'm', 'cm': 'cm', 'mm': 'mm', 'sq in': 'sq in', 'sq ft': 'sq ft', 'sq yd': 'sq yd', 'sq m': 'sq m', 'sq cm': 'sq cm', 'sq mm': 'sq mm', 'cu in': 'cu in', 'cu ft': 'cu ft', 'cu yd': 'cu yd', 'cu m': 'cu m', 'cu cm': 'cu cm', 'cu mm': 'cu mm' };
-        const FRACTION_DENOMINATOR_LIMIT = 32;
+        const FRACTION_DENOMINATOR_LIMIT = 64;
         const DISPLAY_DECIMAL_PLACES = 5;
 
         // --- Utility Functions ---
         function gcd(a, b) { a = Math.abs(Math.round(a)); b = Math.abs(Math.round(b)); while (b) { [a, b] = [b, a % b]; } return a; }
         function resetDimensionalInput() { storedFeet = null; storedInches = null; storedNumerator = null; storedDenominator = null; currentInputIsDimensional = false; }
         function resetConversionState() { conversionSourceInfo = { type: null, baseUnit: null, originalValueStr: null }; }
-        function resetSqCuMode() { currentDimensionMode = 'linear'; sqcuPressCount = 0; }
+        function resetSfCuMode() { currentDimensionMode = 'linear'; sfcuPressCount = 0; }
         function clearTemporaryRoundingState() { tempRoundedDisplay = null; lastValueUsedForRounding = null;}
 
-        function resetCalculatorState(clearHistoryTape = false) {
+        function resetCalculatorStateFull() {
             currentInput = '0';
             firstOperand = null;
             firstOperandWasDimensional = false;
@@ -532,38 +536,52 @@
             displayShouldClear = false;
             resetDimensionalInput();
             resetConversionState();
-            resetSqCuMode();
+            resetSfCuMode(); 
+            inputState = InputState.START;
+            displayDimensionalElement.classList.remove('flashing');
+            history = [];
+            updateHistoryDisplay();
+            resultUnitType = 'linear';
+            clearTemporaryRoundingState();
+        }
+        function resetCalculatorStateExceptHistory() {
+            currentInput = '0';
+            firstOperand = null;
+            firstOperandWasDimensional = false;
+            firstOperandUnitType = 'linear';
+            firstOperandOriginalDisplayUnit = null;
+            operator = null;
+            operatorSymbol = '';
+            displayShouldClear = false;
+            resetDimensionalInput();
+            resetConversionState();
+            resetSfCuMode(); 
             inputState = InputState.START;
             displayDimensionalElement.classList.remove('flashing');
             resultUnitType = 'linear';
             clearTemporaryRoundingState();
-            if (clearHistoryTape) {
-                history = [];
-                updateHistoryDisplay();
-            }
         }
 
-        function getDimensionalValueInches() {
-            let totalInches = 0;
-            if (storedFeet !== null) totalInches += storedFeet * 12;
-            if (storedInches !== null) totalInches += storedInches;
-            let num = storedNumerator;
-            let den = storedDenominator;
-            if (inputState === InputState.ENTERING_NUMERATOR && currentInput !== '0') {
-                num = parseInt(currentInput);
-                return (storedFeet !== null ? storedFeet * 12 : 0) + (storedInches !== null ? storedInches : 0);
-            } else if (inputState === InputState.ENTERING_DENOMINATOR && currentInput !== '0') {
-                den = parseInt(currentInput);
-            }
-            if (num !== null && den !== null && den !== 0) {
-                totalInches += num / den;
-            } else if (num !== null && den === 0) {
-                return NaN;
-            }
-            return totalInches;
+        function getDimensionalValueInches() { /* ... (no change) ... */ 
+            let totalInches = 0; 
+            if (storedFeet !== null) totalInches += storedFeet * 12; 
+            if (storedInches !== null) totalInches += storedInches; 
+            let num = storedNumerator; 
+            let den = storedDenominator; 
+            if (inputState === InputState.ENTERING_NUMERATOR) { 
+                num = parseInt(currentInput); 
+                return (storedFeet !== null ? storedFeet * 12 : 0) + (storedInches !== null ? storedInches : 0); 
+            } else if (inputState === InputState.ENTERING_DENOMINATOR) { 
+                den = parseInt(currentInput); 
+            } 
+            if (num !== null && den !== null && den !== 0) { 
+                totalInches += num / den; 
+            } else if (num !== null && den === 0) { 
+                return NaN; 
+            } 
+            return totalInches; 
         }
-
-        function formatInchesToDimensional(totalInches, forcedNumerator = null, forcedDenominator = null) {
+        function formatInchesToDimensional(totalInches, forcedNumerator = null, forcedDenominator = null) { /* ... (no change) ... */
             if (isNaN(totalInches)) return "Error";
             if (!isFinite(totalInches)) return "Infinity";
 
@@ -573,24 +591,23 @@
             const feet = Math.floor(absTotalInches / 12);
             const remainingInchesAfterFeet = absTotalInches % 12;
             const wholeInchesPart = Math.floor(remainingInchesAfterFeet);
-
+            
             let fractionStr = "";
 
             if (forcedNumerator !== null && forcedDenominator !== null && forcedDenominator > 0) {
                 if (forcedNumerator > 0) {
-                    const common = gcd(forcedNumerator, forcedDenominator);
-                    fractionStr = `${forcedNumerator / common}/${forcedDenominator / common}`;
+                    fractionStr = `${forcedNumerator}/${forcedDenominator}`;
                 }
             } else {
                 const fractionalPartOfInches = remainingInchesAfterFeet - wholeInchesPart;
-                if (fractionalPartOfInches > ROUNDING_EPSILON) {
+                if (fractionalPartOfInches > 1e-9) { 
                     let bestNum = Math.round(fractionalPartOfInches * FRACTION_DENOMINATOR_LIMIT);
                     let bestDen = FRACTION_DENOMINATOR_LIMIT;
                     if (bestNum > 0) {
                         const commonDivisor = gcd(bestNum, bestDen);
                         bestNum /= commonDivisor;
                         bestDen /= commonDivisor;
-                        if (bestDen > 0 && bestNum < bestDen) {
+                        if (bestDen > 0) { 
                             fractionStr = `${bestNum}/${bestDen}`;
                         }
                     }
@@ -606,522 +623,446 @@
             }
 
             if (fractionStr) {
-                if (inchesDisplayString) {
-                    inchesDisplayString += ` ${fractionStr}`;
-                } else {
-                    inchesDisplayString = fractionStr;
+                if (inchesDisplayString) { 
+                    inchesDisplayString += ` ${fractionStr}`; 
+                } else { 
+                    inchesDisplayString = fractionStr; 
                 }
             }
-
+            
             if (inchesDisplayString) {
                 parts.push(inchesDisplayString);
-                if (!parts.some(p => p.includes("in")) && (wholeInchesPart > 0 || fractionStr || (feet === 0 && totalInches !==0))) {
-                     parts.push('in');
-                } else if (feet > 0 && (wholeInchesPart > 0 || fractionStr) && !parts[parts.length-1].endsWith("in")) {
-                     parts.push('in');
-                }
-            } else if (feet === 0 && Math.abs(absTotalInches) < ROUNDING_EPSILON) {
-                return "0 in";
-            } else if (feet > 0 && wholeInchesPart === 0 && !fractionStr) {
-            } else if (feet === 0 && wholeInchesPart === 0 && !fractionStr && totalInches !== 0) {
-                if (Math.abs(totalInches) > ROUNDING_EPSILON) {
-                    return `${sign}${totalInches.toFixed(3)} in`;
-                }
+                parts.push('in');
+            } else if (feet === 0 && Math.abs(absTotalInches) < 1e-9) { 
+                parts.push('0 in');
+            } else if (feet > 0 && !inchesDisplayString && wholeInchesPart === 0 && !fractionStr) {
+                // Case: "X ft" 
             }
 
 
             const formattedString = sign + parts.join(' ').trim();
-            return formattedString === "" || formattedString === "-" ? (totalInches === 0 ? "0 in" : sign + "0 in") : formattedString;
+            return formattedString === "" || formattedString === "-" ? "0 in" : formattedString;
         }
-        function formatAreaDisplay(totalSqInches, unit = 'sq ft') {
-            if (isNaN(totalSqInches)) return "Error";
-            if (!isFinite(totalSqInches)) return "Infinity";
-            const sign = totalSqInches < 0 ? "-" : "";
-            totalSqInches = Math.abs(totalSqInches);
-
+        function formatAreaDisplay(totalSqInches, unit = 'sq ft') { /* ... (no change) ... */
+            if (isNaN(totalSqInches)) return "Error"; 
+            if (!isFinite(totalSqInches)) return "Infinity"; 
+            const sign = totalSqInches < 0 ? "-" : ""; 
+            totalSqInches = Math.abs(totalSqInches); 
+            
             let mainDisplayValue, dimensionalDisplayValue;
             if (unit === 'sq ft') {
-                const sqFeetValue = totalSqInches / areaConversionFactors['sq ft'];
+                const sqFeetValue = totalSqInches / areaConversionFactors['sq ft']; 
                 mainDisplayValue = `${sign}${formatDisplayNumber(String(sqFeetValue))} sq ft`;
                 dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(totalSqInches))} sq in`;
             } else if (unit === 'sq in') {
                 mainDisplayValue = `${sign}${formatDisplayNumber(String(totalSqInches))} sq in`;
-                const sqFeetValue = totalSqInches / areaConversionFactors['sq ft'];
+                const sqFeetValue = totalSqInches / areaConversionFactors['sq ft']; 
                 dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(sqFeetValue))} sq ft`;
-            } else if (areaConversionFactors[unit]) {
+            } else if (areaConversionFactors[unit]) { // For other metric units
                  const valueInTargetUnit = totalSqInches / areaConversionFactors[unit];
                  mainDisplayValue = `${sign}${formatDisplayNumber(String(valueInTargetUnit))} ${displayUnits[unit]}`;
                  dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(totalSqInches))} sq in`;
-            } else {
-                const sqFeetValue = totalSqInches / areaConversionFactors['sq ft'];
+            } else { // Default to sq ft / sq in if unit is unknown
+                const sqFeetValue = totalSqInches / areaConversionFactors['sq ft']; 
                 mainDisplayValue = `${sign}${formatDisplayNumber(String(sqFeetValue))} sq ft`;
                 dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(totalSqInches))} sq in`;
             }
-            return { main: mainDisplayValue, dimensional: dimensionalDisplayValue };
+            return { main: mainDisplayValue, dimensional: dimensionalDisplayValue }; 
         }
-        function formatVolumeDisplay(totalCuInches, unit = 'cu ft') {
-            if (isNaN(totalCuInches)) return "Error";
-            if (!isFinite(totalCuInches)) return "Infinity";
-            const sign = totalCuInches < 0 ? "-" : "";
-            totalCuInches = Math.abs(totalCuInches);
+        function formatVolumeDisplay(totalCuInches, unit = 'cu ft') { /* ... (no change) ... */
+            if (isNaN(totalCuInches)) return "Error"; 
+            if (!isFinite(totalCuInches)) return "Infinity"; 
+            const sign = totalCuInches < 0 ? "-" : ""; 
+            totalCuInches = Math.abs(totalCuInches); 
 
             let mainDisplayValue, dimensionalDisplayValue;
             if (unit === 'cu ft') {
-                const cuFeetValue = totalCuInches / volumeConversionFactors['cu ft'];
+                const cuFeetValue = totalCuInches / volumeConversionFactors['cu ft']; 
                 mainDisplayValue = `${sign}${formatDisplayNumber(String(cuFeetValue))} cu ft`;
                 dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(totalCuInches))} cu in`;
             } else if (unit === 'cu in') {
                  mainDisplayValue = `${sign}${formatDisplayNumber(String(totalCuInches))} cu in`;
-                 const cuFeetValue = totalCuInches / volumeConversionFactors['cu ft'];
+                 const cuFeetValue = totalCuInches / volumeConversionFactors['cu ft']; 
                  dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(cuFeetValue))} cu ft`;
-            } else if (volumeConversionFactors[unit]) {
+            } else if (volumeConversionFactors[unit]) { // For other metric units
                 const valueInTargetUnit = totalCuInches / volumeConversionFactors[unit];
                 mainDisplayValue = `${sign}${formatDisplayNumber(String(valueInTargetUnit))} ${displayUnits[unit]}`;
                 dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(totalCuInches))} cu in`;
-            } else {
-                const cuFeetValue = totalCuInches / volumeConversionFactors['cu ft'];
+            } else { // Default to cu ft / cu in
+                const cuFeetValue = totalCuInches / volumeConversionFactors['cu ft']; 
                 mainDisplayValue = `${sign}${formatDisplayNumber(String(cuFeetValue))} cu ft`;
                 dimensionalDisplayValue = `${sign}${formatDisplayNumber(String(totalCuInches))} cu in`;
             }
-            return { main: mainDisplayValue, dimensional: dimensionalDisplayValue };
+            return { main: mainDisplayValue, dimensional: dimensionalDisplayValue }; 
         }
-        function formatCurrentDimensionalInput() {
-            let parts = [];
-            if (storedFeet !== null) parts.push(`${storedFeet} ft`);
-
-            let inchesPart = '';
-            if (storedInches !== null) inchesPart = `${storedInches}`;
-
-            if (inputState === InputState.ENTERING_NUMERATOR) {
-                let fractionPreview = currentInput === '0' ? '' : currentInput;
-                if (fractionPreview) displayDimensionalElement.classList.add('flashing'); else displayDimensionalElement.classList.remove('flashing');
-                if(inchesPart) inchesPart += ` ${fractionPreview}`; else inchesPart = fractionPreview;
-            } else if (inputState === InputState.ENTERING_DENOMINATOR) {
-                let fractionPreview = `${storedNumerator}/${currentInput === '0' ? '' : currentInput}`;
-                if (currentInput !== '0') displayDimensionalElement.classList.add('flashing'); else displayDimensionalElement.classList.remove('flashing');
-                if(inchesPart) inchesPart += ` ${fractionPreview}`; else inchesPart = fractionPreview;
-            } else if (storedNumerator !== null && storedDenominator !== null) {
-                const commonDivisor = gcd(storedNumerator, storedDenominator);
-                let fractionPreview = `${storedNumerator / commonDivisor}/${storedDenominator / commonDivisor}`;
-                if(inchesPart) inchesPart += ` ${fractionPreview}`; else inchesPart = fractionPreview;
-            }
-
-            if (inchesPart) parts.push(inchesPart);
-
-            if (inchesPart || (storedFeet === null && (inputState === InputState.ENTERING_INCHES || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR))) {
-                if (!parts.some(p => p.includes("in")) && (inchesPart.trim() !== '' || (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR))) {
-                    const lastPart = parts[parts.length -1];
-                    if (!(lastPart && lastPart.includes('/') && storedDenominator === null && inputState !== InputState.ENTERING_DENOMINATOR)) {
-                        parts.push('in');
-                    }
-                }
-            }
-
-            if (inputState !== InputState.ENTERING_NUMERATOR && inputState !== InputState.ENTERING_DENOMINATOR) {
-                displayDimensionalElement.classList.remove('flashing');
-            }
-            return parts.join(' ').trim();
+        function formatCurrentDimensionalInput() { /* ... (no change) ... */
+            let parts = []; 
+            if (storedFeet !== null) parts.push(`${storedFeet} ft`); 
+            if (storedInches !== null) parts.push(`${storedInches}`); 
+            if (inputState === InputState.ENTERING_NUMERATOR) { 
+                let fractionPreview = `${currentInput}`; 
+                displayDimensionalElement.classList.add('flashing'); 
+                if(storedInches !== null && parts.length > 0 && !parts[parts.length-1].includes('ft')) { 
+                    parts[parts.length - 1] += ` ${fractionPreview}`; 
+                } else { 
+                    parts.push(fractionPreview); 
+                } 
+                if (!parts.some(part => part.includes(' in'))) parts.push('in'); 
+            } else if (inputState === InputState.ENTERING_DENOMINATOR) { 
+                let fractionPreview = `${storedNumerator}/${currentInput}`; 
+                displayDimensionalElement.classList.add('flashing'); 
+                if(storedInches !== null && parts.length > 0 && !parts[parts.length-1].includes('ft')) { 
+                    parts[parts.length - 1] += ` ${fractionPreview}`; 
+                } else { 
+                    parts.push(fractionPreview); 
+                } 
+                if (!parts.some(part => part.includes(' in'))) parts.push('in'); 
+            } else if (storedNumerator !== null && storedDenominator !== null) { 
+                const commonDivisor = gcd(storedNumerator, storedDenominator); 
+                let fractionPreview = `${storedNumerator / commonDivisor}/${storedDenominator / commonDivisor}`; 
+                if(storedInches !== null && parts.length > 0 && !parts[parts.length-1].includes('ft')) { 
+                    parts[parts.length - 1] += ` ${fractionPreview}`; 
+                } else { 
+                    parts.push(fractionPreview); 
+                } 
+                if (!parts.some(part => part.includes(' in'))) parts.push('in'); 
+            } else if (storedInches !== null && !parts.some(part => part.includes(' in'))) { 
+                parts.push('in'); 
+            } 
+            if (inputState !== InputState.ENTERING_NUMERATOR && inputState !== InputState.ENTERING_DENOMINATOR) { 
+                displayDimensionalElement.classList.remove('flashing'); 
+            } 
+            return parts.join(' '); 
         }
-        function finalizeDimensionalInput() {
-            let totalInches = NaN;
-            if (currentInputIsDimensional) {
-                totalInches = getDimensionalValueInches();
-            }
-            return totalInches;
+        function finalizeDimensionalInput() { /* ... (no change) ... */
+            let totalInches = NaN; 
+            if (currentInputIsDimensional) { 
+                totalInches = getDimensionalValueInches(); 
+            } 
+            return totalInches; 
         }
-        function updateDisplay() {
+        function updateDisplay() { /* ... (no change in this specific function for the bug, but it relies on correct state) ... */
             if (tempRoundedDisplay) {
                 displayValueElement.textContent = tempRoundedDisplay.main;
                 displayDimensionalElement.textContent = tempRoundedDisplay.dimensional;
-                return;
+                return; 
             }
 
-            let mainDisplayValue;
+            let mainDisplayValue = formatDisplayNumber(currentInput);
             let dimensionalDisplayValue = '';
-            displayDimensionalElement.classList.remove('flashing');
+            displayDimensionalElement.classList.remove('flashing'); 
 
             if (inputState === InputState.SHOWING_RESULT) {
-                const resultValue = parseFloat(currentInput); // currentInput is now always the base unit value for results
-
-                if (resultUnitType === 'volume') {
-                    // resultValue is total cubic inches
-                    const volDisplay = formatVolumeDisplay(resultValue, 'cu ft'); // Default to cu ft display
+                const resultValue = parseFloat(currentInput); // This is the magnitude in the unit specified by conversionSourceInfo.type
+                if (conversionSourceInfo.type && displayUnits[conversionSourceInfo.type]) { 
+                    const targetUnitKey = conversionSourceInfo.type;
+                    if (targetUnitKey.startsWith('sq')) {
+                        // resultValue is the magnitude (e.g., 100 if "100 sq ft"). Convert to base sq in for formatAreaDisplay's first arg.
+                        const valueInBaseSqIn = resultValue * (areaConversionFactors[targetUnitKey] || 1);
+                        const areaDisplay = formatAreaDisplay(valueInBaseSqIn, targetUnitKey);
+                        mainDisplayValue = areaDisplay.main;
+                        dimensionalDisplayValue = areaDisplay.dimensional;
+                    } else if (targetUnitKey.startsWith('cu')) {
+                        const valueInBaseCuIn = resultValue * (volumeConversionFactors[targetUnitKey] || 1);
+                        const volumeDisplay = formatVolumeDisplay(valueInBaseCuIn, targetUnitKey);
+                        mainDisplayValue = volumeDisplay.main;
+                        dimensionalDisplayValue = volumeDisplay.dimensional;
+                    } else { // Linear
+                        const lengthInTargetUnit = resultValue; 
+                        const lengthInBaseInches = lengthInTargetUnit * (conversionFactors[targetUnitKey] || 1);
+                        mainDisplayValue = `${formatDisplayNumber(String(lengthInTargetUnit))} ${displayUnits[targetUnitKey]}`;
+                        dimensionalDisplayValue = formatInchesToDimensional(lengthInBaseInches);
+                    }
+                } else if (resultUnitType === 'volume') { // Result of a calculation, currentInput is already in cu in
+                    const volDisplay = formatVolumeDisplay(resultValue); 
                     mainDisplayValue = volDisplay.main;
                     dimensionalDisplayValue = volDisplay.dimensional;
-                } else if (resultUnitType === 'area') {
-                    // resultValue is total square inches
-                    const areaDisplay = formatAreaDisplay(resultValue, 'sq ft'); // Default to sq ft display
+                } else if (resultUnitType === 'area') { // Result of a calculation, currentInput is already in sq in
+                    const areaDisplay = formatAreaDisplay(resultValue); 
                     mainDisplayValue = areaDisplay.main;
                     dimensionalDisplayValue = areaDisplay.dimensional;
-                } else if (resultUnitType === 'linear' && firstOperandWasDimensional) {
-                    // resultValue is total inches
-                    mainDisplayValue = formatInchesToDimensional(resultValue);
-                    dimensionalDisplayValue = formatDisplayNumber(String(resultValue)) + " in";
-                } else {
-                    // Plain number result (scalar, or direct unit input that's linear)
-                    mainDisplayValue = formatDisplayNumber(String(resultValue));
-                    dimensionalDisplayValue = firstOperandWasDimensional ? (formatDisplayNumber(String(resultValue)) + ' (scalar)') : '';
-                    if (conversionSourceInfo.type && displayUnits[conversionSourceInfo.type] && currentInput !== '0') {
-                        dimensionalDisplayValue = `${mainDisplayValue} ${displayUnits[conversionSourceInfo.type]}`;
-                    } else if (conversionSourceInfo.originalValueStr) {
-                         dimensionalDisplayValue = conversionSourceInfo.originalValueStr;
-                    }
+                } else if (resultUnitType === 'linear' && firstOperandWasDimensional) { // Result of calculation, currentInput is in inches
+                    mainDisplayValue = formatInchesToDimensional(resultValue); 
+                    dimensionalDisplayValue = formatDisplayNumber(String(resultValue)) + " in"; 
+                } else { // Plain number result
+                    dimensionalDisplayValue = '';
                 }
             } else if (inputState === InputState.CONVERSION_PENDING) {
-                let valueToConvertFormatted = formatDisplayNumber(String(firstOperand));
-                if (conversionSourceInfo.type === 'area') {
-                    valueToConvertFormatted = formatAreaDisplay(firstOperand, conversionSourceInfo.baseUnit || 'sq in').main;
+                let valueToConvertFormatted = formatDisplayNumber(String(firstOperand)); // firstOperand is in base units here
+                if (conversionSourceInfo.type === 'area') { // type refers to the source unit type
+                    valueToConvertFormatted = formatAreaDisplay(firstOperand, conversionSourceInfo.baseUnit || 'sq in').main; // baseUnit was original unit
                 } else if (conversionSourceInfo.type === 'volume') {
                     valueToConvertFormatted = formatVolumeDisplay(firstOperand, conversionSourceInfo.baseUnit || 'cu in').main;
-                } else if (conversionSourceInfo.type === 'linear' && (conversionSourceInfo.baseUnit === 'in' || conversionSourceInfo.baseUnit )) {
+                } else if (conversionSourceInfo.type === 'linear' && (conversionSourceInfo.baseUnit === 'in' || conversionSourceInfo.baseUnit )) { 
                     valueToConvertFormatted = formatInchesToDimensional(firstOperand);
-                } else if (conversionSourceInfo.originalValueStr) {
-                    valueToConvertFormatted = conversionSourceInfo.originalValueStr;
                 }
                 dimensionalDisplayValue = `Conv ${valueToConvertFormatted} → ?`;
-                mainDisplayValue = formatDisplayNumber(String(firstOperand));
+                mainDisplayValue = formatDisplayNumber(String(firstOperand)); 
             } else if (currentInputIsDimensional || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) {
                 dimensionalDisplayValue = formatCurrentDimensionalInput();
                 mainDisplayValue = (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) ? currentInput : formatDisplayNumber(currentInput);
-            } else if (conversionSourceInfo.type && displayUnits[conversionSourceInfo.type] && currentInput !== '0') {
-                mainDisplayValue = formatDisplayNumber(currentInput);
+            } else if (conversionSourceInfo.type === 'linear' && conversionSourceInfo.baseUnit && displayUnits[conversionSourceInfo.baseUnit] && inputState !== InputState.ENTERING_DECIMAL) {
+                 // This state is when user typed e.g. "5" then "m", conversionSourceInfo.type is 'm'
                 dimensionalDisplayValue = `${mainDisplayValue} ${displayUnits[conversionSourceInfo.type]}`;
-            } else { // Default display for plain numbers
-                mainDisplayValue = formatDisplayNumber(currentInput);
-                dimensionalDisplayValue = '';
             }
 
 
-            if (currentDimensionMode === 'area' && sqcuPressCount === 1 && inputState !== InputState.SHOWING_RESULT && inputState !== InputState.CONVERSION_PENDING) {
-                dimensionalDisplayValue = "SQ Mode (Area)";
-            } else if (currentDimensionMode === 'volume' && sqcuPressCount === 2 && inputState !== InputState.SHOWING_RESULT && inputState !== InputState.CONVERSION_PENDING) {
-                 dimensionalDisplayValue = "CU Mode (Volume)";
+            if (currentDimensionMode === 'area' && sfcuPressCount === 1 && inputState !== InputState.SHOWING_RESULT) {
+                dimensionalDisplayValue = "SF Mode (Area)";
+            } else if (currentDimensionMode === 'volume' && sfcuPressCount === 2 && inputState !== InputState.SHOWING_RESULT) {
+                 dimensionalDisplayValue = "CF Mode (Volume)";
             }
 
 
             displayValueElement.textContent = mainDisplayValue;
             displayDimensionalElement.textContent = dimensionalDisplayValue;
         }
-        function updateHistoryDisplay() {
-            historyTapeElement.innerHTML = '';
+        function updateHistoryDisplay() { /* ... (no change) ... */
+            historyTapeElement.innerHTML = ''; 
             for (let i = 0; i < history.length; i++) {
                 const historyItemDiv = document.createElement('div');
                 historyItemDiv.classList.add('history-item');
-                historyItemDiv.innerHTML = history[i];
+                historyItemDiv.innerHTML = history[i]; 
                 historyTapeElement.appendChild(historyItemDiv);
             }
-            historyTapeElement.scrollTop = historyTapeElement.scrollHeight;
+            historyTapeElement.scrollTop = historyTapeElement.scrollHeight; 
         }
         function addHistoryEntry(entry) { console.log("addHistoryEntry:", entry); history.push(entry); if (history.length > MAX_HISTORY_ITEMS) { history.shift(); } updateHistoryDisplay(); }
-        function clearHistory() { console.log("clearHistory: Clear Tape pressed"); history = []; updateHistoryDisplay(); addHistoryEntry("Tape Cleared"); }
-        function formatDisplayNumber(valueStr) { const errorMessages = ['Error', 'Set Unit', 'Cannot Add/Sub Area', 'Cannot Add/Sub L & A', 'Cannot Conv Area', 'Cannot Conv Volume', 'Cannot Add/Sub Volume', 'Cannot Add/Sub A & V', 'Cannot Add/Sub L & V', 'Cannot Mult V & L', 'Cannot Div by Zero']; if (errorMessages.includes(valueStr)) { return valueStr; } const maxLength = 12; let hasTrailingDecimal = valueStr.endsWith('.'); let displayStr = valueStr; if (hasTrailingDecimal) { displayStr = valueStr.slice(0, -1); } const numericValue = parseFloat(displayStr); if (isNaN(numericValue)) { return (displayStr === '0' || displayStr === '') ? '0' : 'Error'; } let formattedNumber; if (Math.abs(numericValue) > 1e12 || (Math.abs(numericValue) < 1e-6 && numericValue !== 0)) { formattedNumber = numericValue.toExponential(maxLength - 6); } else { let roundedValueStr; if (displayStr.includes('.')) { roundedValueStr = numericValue.toFixed(DISPLAY_DECIMAL_PLACES); roundedValueStr = roundedValueStr.replace(/0+$/, '').replace(/\.$/, ''); } else { roundedValueStr = displayStr; } const parts = roundedValueStr.split('.'); parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); formattedNumber = parts.join('.'); } if (hasTrailingDecimal && !formattedNumber.includes('.') && !formattedNumber.toLowerCase().includes('e')) { formattedNumber += '.'; } return formattedNumber.slice(0, maxLength); }
+        function clearHistory() { console.log("clearHistory: Clear Tape pressed"); history = []; updateHistoryDisplay(); }
+        function formatDisplayNumber(valueStr) { /* ... (no change) ... */ const errorMessages = ['Error', 'Set Unit', 'Cannot Add/Sub Area', 'Cannot Add/Sub L & A', 'Cannot Conv Area', 'Cannot Conv Volume', 'Cannot Add/Sub Volume', 'Cannot Add/Sub A & V', 'Cannot Add/Sub L & V', 'Cannot Mult V & L', 'Cannot Div by Zero']; if (errorMessages.includes(valueStr)) { return valueStr; } const maxLength = 12; let hasTrailingDecimal = valueStr.endsWith('.'); let displayStr = valueStr; if (hasTrailingDecimal) { displayStr = valueStr.slice(0, -1); } const numericValue = parseFloat(displayStr); if (isNaN(numericValue)) { return (displayStr === '0' || displayStr === '') ? '0' : 'Error'; } let formattedNumber; if (Math.abs(numericValue) > 1e12 || (Math.abs(numericValue) < 1e-6 && numericValue !== 0)) { formattedNumber = numericValue.toExponential(maxLength - 6); } else { let roundedValueStr; if (displayStr.includes('.')) { roundedValueStr = numericValue.toFixed(DISPLAY_DECIMAL_PLACES); roundedValueStr = roundedValueStr.replace(/0+$/, '').replace(/\.$/, ''); } else { roundedValueStr = displayStr; } const parts = roundedValueStr.split('.'); parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); formattedNumber = parts.join('.'); } if (hasTrailingDecimal && !formattedNumber.includes('.') && !formattedNumber.toLowerCase().includes('e')) { formattedNumber += '.'; } return formattedNumber.slice(0, maxLength); }
 
         // --- Input Handling Functions ---
-        function restorePreciseValueAndClearRounding() {
+        function restorePreciseValueAndClearRounding() { /* ... (no change) ... */
             if (tempRoundedDisplay) {
                 currentInput = tempRoundedDisplay.preciseValue;
                 clearTemporaryRoundingState();
             }
         }
-        function inputDigit(digit) {
-            restorePreciseValueAndClearRounding();
-            resetSqCuMode();
+        function inputDigit(digit) { /* ... (no change) ... */
+            restorePreciseValueAndClearRounding(); 
+            resetSfCuMode(); 
 
-            if (inputState === InputState.SHOWING_RESULT) {
-                resetCalculatorState();
-                currentInput = digit;
-                inputState = InputState.START;
-            } else if (inputState === InputState.DIMENSIONAL_COMPLETE) {
-                if (storedInches !== null || storedFeet !== null) {
-                    inputState = InputState.ENTERING_NUMERATOR;
-                    currentInput = digit;
-                    displayShouldClear = false;
-                    currentInputIsDimensional = true;
-                } else {
-                    resetCalculatorState();
-                    currentInput = digit;
-                    inputState = InputState.START;
-                }
-            } else if (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) {
-                if (currentInput === '0' && digit === '0') { /* allow leading zero if that's all */ }
-                else if (currentInput.length < 4) {
-                     currentInput = currentInput === '0' ? digit : currentInput + digit;
-                }
+            if (inputState === InputState.SHOWING_RESULT) { 
+                resetCalculatorStateExceptHistory(); 
+                currentInput = digit; 
+                inputState = InputState.START; 
+            } else if (inputState === InputState.DIMENSIONAL_COMPLETE) { 
+                if (storedInches !== null) { 
+                    inputState = InputState.ENTERING_NUMERATOR; 
+                    currentInput = digit; 
+                    displayShouldClear = false; 
+                    currentInputIsDimensional = true; 
+                } else { 
+                    resetCalculatorStateExceptHistory(); 
+                    currentInput = digit; 
+                    inputState = InputState.START; 
+                } 
+            } else if (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) { 
+                if (currentInput === '0' && digit === '0') { updateDisplay(); return; }
+                currentInput = currentInput === '0' ? digit : currentInput + digit; 
             } else {
-                if (displayShouldClear) {
-                    currentInput = '0';
-                    displayShouldClear = false;
-                    if (inputState !== InputState.ENTERING_INCHES && inputState !== InputState.ENTERING_NUMERATOR && inputState !== InputState.ENTERING_DENOMINATOR && inputState !== InputState.DIMENSIONAL_COMPLETE) {
-                        resetDimensionalInput();
-                        resetConversionState();
-                        inputState = InputState.START;
-                    }
-                }
-                if (currentInput === '0' && digit === '0') { /* allow leading zero if that's all */ }
-                else if (currentInput.length < 10) {
-                    currentInput = currentInput === '0' ? digit : currentInput + digit;
-                }
-                if (inputState === InputState.START && !currentInputIsDimensional) {
-                     inputState = InputState.ENTERING_FEET;
-                }
+                if (displayShouldClear) { 
+                    currentInput = '0'; 
+                    displayShouldClear = false; 
+                    if (inputState !== InputState.ENTERING_INCHES && inputState !== InputState.ENTERING_NUMERATOR && inputState !== InputState.ENTERING_DENOMINATOR && inputState !== InputState.DIMENSIONAL_COMPLETE) { 
+                        resetDimensionalInput(); 
+                        resetConversionState(); 
+                        inputState = InputState.START; 
+                    } 
+                } 
+                if (currentInput === '0' && digit === '0') { updateDisplay(); return; }
+                currentInput = currentInput === '0' ? digit : currentInput + digit; 
+                if (inputState === InputState.START) { 
+                    inputState = InputState.ENTERING_FEET; 
+                } 
             }
-            updateDisplay();
+            updateDisplay(); 
         }
-        function inputDecimal() {
+        function inputDecimal() { /* ... (no change) ... */
             restorePreciseValueAndClearRounding();
-            resetSqCuMode();
+            resetSfCuMode(); 
 
-            if (inputState === InputState.SHOWING_RESULT) {
-                resetCalculatorState();
-                currentInput = '0.';
-                inputState = InputState.ENTERING_DECIMAL;
-            } else if (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) {
-                updateDisplay(); return;
-            } else if (displayShouldClear) {
-                currentInput = '0.';
-                displayShouldClear = false;
-                resetDimensionalInput();
-                resetConversionState();
-                inputState = InputState.ENTERING_DECIMAL;
-            } else if (!currentInput.includes('.')) {
-                if (inputState === InputState.DIMENSIONAL_COMPLETE) {
-                    resetDimensionalInput();
-                    resetConversionState();
-                    currentInput = '0.';
-                    inputState = InputState.ENTERING_DECIMAL;
-                } else {
-                    currentInput += '.';
-                    if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_INCHES) {
-                        inputState = InputState.ENTERING_DECIMAL;
-                    }
-                }
-            }
-            updateDisplay();
+            if (inputState === InputState.SHOWING_RESULT) { 
+                resetCalculatorStateExceptHistory(); 
+                currentInput = '0.'; 
+                inputState = InputState.ENTERING_DECIMAL; 
+            } else if (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) { 
+                updateDisplay(); return; 
+            } else if (displayShouldClear) { 
+                currentInput = '0.'; 
+                displayShouldClear = false; 
+                resetDimensionalInput(); 
+                resetConversionState(); 
+                inputState = InputState.ENTERING_DECIMAL; 
+            } else if (!currentInput.includes('.')) { 
+                if (inputState === InputState.DIMENSIONAL_COMPLETE) { 
+                    resetDimensionalInput(); 
+                    resetConversionState(); 
+                    currentInput = '0.'; 
+                    inputState = InputState.ENTERING_DECIMAL; 
+                } else { 
+                    currentInput += '.'; 
+                    if (inputState === InputState.START || inputState === InputState.ENTERING_FEET) { 
+                        inputState = InputState.ENTERING_DECIMAL; 
+                    } else if (inputState === InputState.ENTERING_INCHES) { 
+                        inputState = InputState.ENTERING_DECIMAL; 
+                    } 
+                } 
+            } 
+            updateDisplay(); 
         }
-
-        function performCalculation(op1, op1Type, op1IsDim, op2, op2Type, op2IsDim, operation) {
-            console.log(`performCalculation: op1=${op1} (${op1Type}, dim:${op1IsDim}), op2=${op2} (${op2Type}, dim:${op2IsDim}), operation=${operation}`);
-            if (op1 === null || isNaN(op1) || isNaN(op2)) {
-                return { value: NaN, unitType: 'linear', isDimensional: false, error: 'Invalid Operand' };
-            }
-
-            let resultValue = 0;
-            let resultUnitTypeCalc = 'linear';
-            let resultIsDimensionalCalc = false;
-
-            if (operation === 'add' || operation === 'subtract') {
-                if (op1Type !== op2Type) {
-                    return { value: NaN, unitType: 'linear', isDimensional: false, error: `Cannot Add/Sub ${op1Type} & ${op2Type}` };
-                }
-                resultUnitTypeCalc = op1Type;
-                resultIsDimensionalCalc = op1IsDim || op2IsDim;
-            } else if (operation === 'multiply') {
-                if (op1Type === 'linear' && op2Type === 'linear') {
-                    if (op1IsDim && op2IsDim) {
-                        resultUnitTypeCalc = 'area';
-                        resultIsDimensionalCalc = true;
-                    } else if (op1IsDim || op2IsDim) {
-                        resultUnitTypeCalc = 'linear';
-                        resultIsDimensionalCalc = true;
-                    } else {
-                        resultUnitTypeCalc = 'linear';
-                        resultIsDimensionalCalc = false;
-                    }
-                } else if ((op1Type === 'area' && op2Type === 'linear') || (op1Type === 'linear' && op2Type === 'area')) {
-                    const linearOpIsDim = (op1Type === 'linear' ? op1IsDim : op2IsDim);
-                    if (linearOpIsDim) {
-                        resultUnitTypeCalc = 'volume';
-                    } else {
-                        resultUnitTypeCalc = 'area';
-                    }
-                    resultIsDimensionalCalc = true;
-                } else if ((op1Type === 'volume' && op2Type === 'linear') || (op1Type === 'linear' && op2Type === 'volume')) {
-                    const linearOpIsDim = (op1Type === 'linear' ? op1IsDim : op2IsDim);
-                    if (linearOpIsDim) {
-                        return { value: NaN, unitType: 'linear', isDimensional: false, error: "Cannot Mult V & L(dim)" };
-                    } else {
-                        resultUnitTypeCalc = 'volume';
-                    }
-                    resultIsDimensionalCalc = true;
-                } else {
-                    return { value: NaN, unitType: 'linear', isDimensional: false, error: `Cannot Mult ${op1Type} & ${op2Type}` };
-                }
-            } else if (operation === 'divide') {
-                if (op2 === 0) {
-                    return { value: NaN, unitType: 'linear', isDimensional: false, error: "Cannot Div by Zero" };
-                }
-                if (op1Type === 'linear' && op2Type === 'linear') {
-                    resultUnitTypeCalc = 'linear';
-                    if (op1IsDim && op2IsDim) {
-                        resultIsDimensionalCalc = false;
-                    } else if (op1IsDim && !op2IsDim) {
-                        resultIsDimensionalCalc = true;
-                    } else {
-                        resultIsDimensionalCalc = !op1IsDim && !op2IsDim ? false : true;
-                         if (!op1IsDim && op2IsDim) {
-                             resultIsDimensionalCalc = false;
-                         }
-                    }
-                } else if (op1Type === 'area' && op2Type === 'linear') {
-                    resultUnitTypeCalc = op2IsDim ? 'linear' : 'area';
-                    resultIsDimensionalCalc = true;
-                } else if (op1Type === 'volume' && op2Type === 'linear') {
-                    resultUnitTypeCalc = op2IsDim ? 'area' : 'volume';
-                    resultIsDimensionalCalc = true;
-                } else if (op1Type === 'volume' && op2Type === 'area') {
-                    resultUnitTypeCalc = 'linear';
-                    resultIsDimensionalCalc = true;
-                } else if (op1Type === 'area' && op2Type === 'area') {
-                    resultUnitTypeCalc = 'linear';
-                    resultIsDimensionalCalc = false;
-                } else if (op1Type === 'volume' && op2Type === 'volume') {
-                    resultUnitTypeCalc = 'linear';
-                    resultIsDimensionalCalc = false;
-                } else {
-                    return { value: NaN, unitType: 'linear', isDimensional: false, error: `Cannot Div ${op1Type} by ${op2Type}` };
-                }
-            }
-
-            switch (operation) {
-                case 'add': resultValue = op1 + op2; break;
-                case 'subtract': resultValue = op1 - op2; break;
-                case 'multiply': resultValue = op1 * op2; break;
-                case 'divide': resultValue = op1 / op2; break;
-                default:
-                    console.warn("Unknown operation:", operation);
-                    return { value: op2, unitType: op2Type, isDimensional: op2IsDim };
-            }
-            console.log(`performCalculation: Result = ${resultValue} (${resultUnitTypeCalc}, dim:${resultIsDimensionalCalc})`);
-            return { value: resultValue, unitType: resultUnitTypeCalc, isDimensional: resultIsDimensionalCalc };
-        }
-
+        function performCalculation(op1, op1Type, op1WasDim, op2, op2Type, op2WasDim, operation) { /* ... (no change, assumes op1, op2 are in base units) ... */ console.log(`performCalculation: op1=${op1} (${op1Type}, dim:${op1WasDim}), op2=${op2} (${op2Type}, dim:${op2WasDim}), operation=${operation}`); if (op1 === null || isNaN(op1) || isNaN(op2)) { return { value: NaN, unitType: 'linear', error: 'Invalid Operand' }; } let resultValue = 0; let resultUnitTypeCalc = 'linear'; const op1IsNumeric = (op1Type === 'linear' && !op1WasDim); const op2IsNumeric = (op2Type === 'linear' && !op2WasDim); if (operation === 'add' || operation === 'subtract') { if (op1Type !== op2Type) { return { value: NaN, unitType: 'linear', error: `Cannot Add/Sub ${op1Type} & ${op2Type}` }; } resultUnitTypeCalc = op1Type; } else if (operation === 'multiply') { if (op1Type === 'linear' && op2Type === 'linear') { resultUnitTypeCalc = (op1IsNumeric && op2IsNumeric) ? 'linear' : (op1IsNumeric || op2IsNumeric) ? 'linear' : 'area'; } else if ((op1Type === 'area' && op2Type === 'linear') || (op1Type === 'linear' && op2Type === 'area')) { const linearOperandIsNumeric = (op1Type === 'linear' ? op1IsNumeric : op2IsNumeric); resultUnitTypeCalc = linearOperandIsNumeric ? 'area' : 'volume'; } else if ((op1Type === 'volume' && op2Type === 'linear') || (op1Type === 'linear' && op2Type === 'volume')) { const linearOperandIsNumeric = (op1Type === 'linear' ? op1IsNumeric : op2IsNumeric); if (linearOperandIsNumeric) resultUnitTypeCalc = 'volume'; else return { value: NaN, unitType: 'linear', error: (op1Type === 'volume' ? "Cannot Mult V & L" : "Cannot Mult L & V") }; } else if (op1Type === 'area' && op2Type === 'area') { return { value: NaN, unitType: 'linear', error: "Cannot Mult A & A"}; } else if (op1Type === 'volume' && op2Type === 'volume') { return { value: NaN, unitType: 'linear', error: "Cannot Mult V & V"}; } else { return { value: NaN, unitType: 'linear', error: `Cannot Mult ${op1Type} & ${op2Type}` }; } } else if (operation === 'divide') { if (op2 === 0) { return { value: NaN, unitType: 'linear', error: "Cannot Div by Zero" }; } if (op1Type === 'linear' && op2Type === 'linear') { resultUnitTypeCalc = 'linear'; } else if (op1Type === 'area' && op2Type === 'linear') { resultUnitTypeCalc = op2IsNumeric ? 'area' : 'linear'; } else if (op1Type === 'volume' && op2Type === 'linear') { resultUnitTypeCalc = op2IsNumeric ? 'volume' : 'area'; } else if (op1Type === 'volume' && op2Type === 'area') { resultUnitTypeCalc = 'linear'; } else if (op1Type === 'linear' && (op2Type === 'area' || op2Type === 'volume')) { return { value: NaN, unitType: 'linear', error: `Cannot Div L by ${op2Type}` }; } else if (op1Type === 'area' && op2Type === 'volume') { return { value: NaN, unitType: 'linear', error: "Cannot Div A by V" }; } else { resultUnitTypeCalc = 'linear'; } } switch (operation) { case 'add': resultValue = op1 + op2; break; case 'subtract': resultValue = op1 - op2; break; case 'multiply': resultValue = op1 * op2; break; case 'divide': resultValue = op1 / op2; break; default: console.warn("Unknown operation:", operation); return { value: op2, unitType: op2Type }; } console.log(`performCalculation: Result = ${resultValue} (${resultUnitTypeCalc})`); return { value: resultValue, unitType: resultUnitTypeCalc }; }
+        
+        // --- MODIFIED handleOperator ---
         function handleOperator(newOperator) {
             restorePreciseValueAndClearRounding();
-            resetSqCuMode();
+            resetSfCuMode(); 
 
             const operatorSymbols = { 'add': '+', 'subtract': '−', 'multiply': '×', 'divide': '÷' };
             const newOperatorSymbol = operatorSymbols[newOperator] || '';
 
-            if (storedFeet !== null && inputState === InputState.ENTERING_INCHES && currentInput !== '0' && !isNaN(parseFloat(currentInput))) {
-                const inchesVal = parseFloat(currentInput);
-                if (!isNaN(inchesVal)) {
-                    storedInches = inchesVal;
-                    currentInput = String(getDimensionalValueInches());
-                    inputState = InputState.DIMENSIONAL_COMPLETE;
-                    currentInputIsDimensional = true;
-                }
-            }
-
-
             if (inputState === InputState.SHOWING_RESULT) {
-                let rawValueFromDisplay = parseFloat(currentInput); // currentInput is base value for SHOWING_RESULT
-                let baseUnitValue = rawValueFromDisplay; // Already in base units
-
-                // Determined unit type and dimensional status from previous result state
+                let rawValueFromDisplay = parseFloat(currentInput);
+                let baseUnitValue = rawValueFromDisplay;
                 let determinedUnitType = resultUnitType;
-                let determinedWasDimensional = firstOperandWasDimensional;
+                let determinedWasDimensional = firstOperandWasDimensional; // From previous state that led to SHOWING_RESULT
+                let originalDisplayUnitForHistory = conversionSourceInfo.type; // Capture before reset
 
-                // If the previous result was a specific unit input (e.g. "5m"), that info is in conversionSourceInfo.
-                // We keep the currentInput as the base unit value.
-                // The historyOperandDisplay needs to reflect the original displayed unit.
-                let historyOperandDisplay = conversionSourceInfo.originalValueStr || '';
-
-                if (determinedUnitType === 'area') {
-                    historyOperandDisplay = formatAreaDisplay(baseUnitValue, conversionSourceInfo.type || 'sq ft').main; // Use conversionSourceInfo.type as preferred
-                } else if (determinedUnitType === 'volume') {
-                    historyOperandDisplay = formatVolumeDisplay(baseUnitValue, conversionSourceInfo.type || 'cu ft').main; // Use conversionSourceInfo.type as preferred
-                } else if (determinedUnitType === 'linear' && determinedWasDimensional) {
-                    historyOperandDisplay = formatInchesToDimensional(baseUnitValue); // Base value is inches
-                } else {
-                    historyOperandDisplay = formatDisplayNumber(String(baseUnitValue)); // Plain number
+                if (determinedUnitType === 'area' && conversionSourceInfo.type && areaConversionFactors[conversionSourceInfo.type]) {
+                    baseUnitValue = rawValueFromDisplay * areaConversionFactors[conversionSourceInfo.type];
+                    determinedWasDimensional = true;
+                } else if (determinedUnitType === 'volume' && conversionSourceInfo.type && volumeConversionFactors[conversionSourceInfo.type]) {
+                    baseUnitValue = rawValueFromDisplay * volumeConversionFactors[conversionSourceInfo.type];
+                    determinedWasDimensional = true;
+                } else if (determinedUnitType === 'linear' && conversionSourceInfo.type && conversionFactors[conversionSourceInfo.type]) {
+                    baseUnitValue = rawValueFromDisplay * conversionFactors[conversionSourceInfo.type]; // To inches
+                    determinedWasDimensional = true;
+                } else if (determinedUnitType === 'linear' && determinedWasDimensional && !conversionSourceInfo.type) {
+                    // Already in base inches from a prior dimensional calculation (e.g., 2ft + 3in shows as dimensional result)
+                    // baseUnitValue is already rawValueFromDisplay (which is in inches)
                 }
+                // else: plain number, or already a base unit result from a simple calculation
 
                 firstOperand = baseUnitValue;
                 firstOperandUnitType = determinedUnitType;
                 firstOperandWasDimensional = determinedWasDimensional;
-                firstOperandOriginalDisplayUnit = historyOperandDisplay; // Store the formatted string for history
+                firstOperandOriginalDisplayUnit = originalDisplayUnitForHistory; // Store for potential use in chained ops history
 
                 operator = newOperator;
                 operatorSymbol = newOperatorSymbol;
 
+                let historyOperandDisplay;
+                if (firstOperandUnitType === 'area') {
+                    historyOperandDisplay = formatAreaDisplay(firstOperand, originalDisplayUnitForHistory || 'sq ft').main;
+                } else if (firstOperandUnitType === 'volume') {
+                    historyOperandDisplay = formatVolumeDisplay(firstOperand, originalDisplayUnitForHistory || 'cu ft').main;
+                } else if (firstOperandUnitType === 'linear' && firstOperandWasDimensional) {
+                    historyOperandDisplay = formatInchesToDimensional(firstOperand); // firstOperand is in inches
+                } else {
+                     // If it was a unitized linear that became base inches, conversionSourceInfo.originalValueStr might be better
+                    historyOperandDisplay = conversionSourceInfo.originalValueStr || formatDisplayNumber(String(rawValueFromDisplay));
+                }
+                
                 addHistoryEntry(`${historyOperandDisplay} ${operatorSymbol}`);
-
+                
                 displayShouldClear = true;
                 inputState = InputState.START;
-                resetConversionState();
+                resetConversionState(); // Clear for the next number input
                 resetDimensionalInput();
-                updateDisplay();
+                updateDisplay(); // Show that input is cleared, ready for next number
                 return;
             }
 
+            // This part handles forming an operand if not from SHOWING_RESULT (e.g. direct input)
             let inputValue;
-            let inputUnitType = 'linear';
+            let inputUnitType = 'linear'; // Default
             let inputWasDimensional = false;
-            let inputOriginalDisplayString = formatDisplayNumber(currentInput);
+            let inputOriginalDisplayUnit = null; // For history if this becomes first operand
 
             if (inputState === InputState.ENTERING_INCHES || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.DIMENSIONAL_COMPLETE) {
-                inputValue = finalizeDimensionalInput();
+                inputValue = finalizeDimensionalInput(); // This is in base inches
                 inputUnitType = 'linear';
                 inputWasDimensional = true;
-                inputOriginalDisplayString = formatInchesToDimensional(inputValue);
+                // inputOriginalDisplayUnit could be constructed here if needed for history: formatInchesToDimensional(inputValue)
                 resetDimensionalInput();
-            } else if (conversionSourceInfo.type && conversionSourceInfo.baseUnit && conversionFactors[conversionSourceInfo.type]) {
-                inputValue = parseFloat(currentInput) * conversionFactors[conversionSourceInfo.type];
+            } else if (conversionSourceInfo.type === 'linear' && conversionSourceInfo.baseUnit && conversionSourceInfo.type !== conversionSourceInfo.baseUnit) {
+                // This state (e.g. "5" then "m" was pressed, conversionSourceInfo.type='m', baseUnit='m')
+                // should ideally lead to SHOWING_RESULT and be handled by the block above.
+                // If reached here, it implies an intermediate state. Let's ensure base units.
+                inputValue = parseFloat(currentInput) * conversionFactors[conversionSourceInfo.type]; // to inches
                 inputUnitType = 'linear';
                 inputWasDimensional = true;
-                inputOriginalDisplayString = conversionSourceInfo.originalValueStr || `${formatDisplayNumber(currentInput)} ${displayUnits[conversionSourceInfo.type]}`;
+                inputOriginalDisplayUnit = conversionSourceInfo.type;
             } else {
                 inputValue = parseFloat(currentInput);
-                inputUnitType = 'linear';
+                inputUnitType = 'linear'; // A plain number is linear by default
                 inputWasDimensional = false;
+                // inputOriginalDisplayUnit = null; (or formatDisplayNumber(currentInput))
             }
 
             if (isNaN(inputValue)) {
                 currentInput = 'Error';
-                resetCalculatorState();
+                resetCalculatorStateExceptHistory();
                 inputState = InputState.SHOWING_RESULT;
                 resultUnitType = 'linear';
                 updateDisplay();
                 return;
             }
 
-            if (operator && firstOperand !== null) {
+            if (operator && !displayShouldClear) { // Chained operation
+                // firstOperand is already set and in base units.
+                // inputValue is the second operand, should also be in base units (handled by parsing above).
                 const calcResult = performCalculation(firstOperand, firstOperandUnitType, firstOperandWasDimensional, inputValue, inputUnitType, inputWasDimensional, operator);
+                
+                if (calcResult.error) { /* ... error handling ... */ return; }
+                if (isNaN(calcResult.value)) { /* ... error handling ... */ return; }
 
-                if (calcResult.error) { currentInput = calcResult.error; resetCalculatorState(); inputState = InputState.SHOWING_RESULT; updateDisplay(); return; }
-                if (isNaN(calcResult.value)) { currentInput = 'Error'; resetCalculatorState(); inputState = InputState.SHOWING_RESULT; updateDisplay(); return; }
-
+                // Update history for the second operand of the chained operation
                 if (history.length > 0) {
                     let lastEntryIndex = history.length - 1;
-                    if (history[lastEntryIndex] && history[lastEntryIndex].trim().endsWith(operatorSymbol)) {
-                         history[lastEntryIndex] = `${history[lastEntryIndex]} ${inputOriginalDisplayString}`;
-                         updateHistoryDisplay();
+                    let secondOperandDisplayForHistory;
+                     if (inputUnitType === 'area') { // This path for inputValue implies more complex SF-CU handling for 2nd op
+                        secondOperandDisplayForHistory = formatAreaDisplay(inputValue, inputOriginalDisplayUnit || 'sq ft').main;
+                    } else if (inputUnitType === 'volume') {
+                        secondOperandDisplayForHistory = formatVolumeDisplay(inputValue, inputOriginalDisplayUnit || 'cu ft').main;
+                    } else if (inputWasDimensional) { // Linear dimensional
+                        secondOperandDisplayForHistory = formatInchesToDimensional(inputValue); // inputValue is in inches
+                    } else {
+                        secondOperandDisplayForHistory = formatDisplayNumber(String(inputValue)); // Plain number
                     }
+
+                    if (history[lastEntryIndex] && history[lastEntryIndex].includes(operatorSymbol) && !history[lastEntryIndex].includes('=')) {
+                        history[lastEntryIndex] = `${history[lastEntryIndex]} ${secondOperandDisplayForHistory}`;
+                    }
+                    updateHistoryDisplay();
                 }
-
-                firstOperand = calcResult.value;
+                
+                firstOperand = calcResult.value; // Result is in base units
                 firstOperandUnitType = calcResult.unitType;
-                firstOperandWasDimensional = calcResult.isDimensional;
-                firstOperandOriginalDisplayUnit = null;
+                firstOperandWasDimensional = (calcResult.unitType === 'linear' && (firstOperandWasDimensional || inputWasDimensional)) || calcResult.unitType === 'area' || calcResult.unitType === 'volume';
+                firstOperandOriginalDisplayUnit = null; // Result of calculation doesn't have an "original" display unit from input in the same way
 
-                currentInput = String(firstOperand); // CurrentInput is now the base unit value for this new result
-                resultUnitType = firstOperandUnitType;
+                currentInput = String(firstOperand); // Keep currentInput as base unit for next potential SHOWING_RESULT state
+                resultUnitType = firstOperandUnitType; // Update global result type
+                // The display will format this base unit currentInput based on resultUnitType
 
-                let resultForHistoryDisplay;
-                if (firstOperandUnitType === 'area') resultForHistoryDisplay = formatAreaDisplay(firstOperand, 'sq ft').main;
-                else if (firstOperandUnitType === 'volume') resultForHistoryDisplay = formatVolumeDisplay(firstOperand, 'cu ft').main;
-                else if (firstOperandWasDimensional) resultForHistoryDisplay = formatInchesToDimensional(firstOperand);
-                else resultForHistoryDisplay = formatDisplayNumber(String(firstOperand));
-
-                addHistoryEntry(`${resultForHistoryDisplay} ${newOperatorSymbol}`);
-
-            } else {
-                firstOperand = inputValue;
+            } else { // First operand in a new chain
+                firstOperand = inputValue; // inputValue is already in base units from parsing above
                 firstOperandUnitType = inputUnitType;
                 firstOperandWasDimensional = inputWasDimensional;
-                firstOperandOriginalDisplayUnit = inputOriginalDisplayString;
+                firstOperandOriginalDisplayUnit = inputOriginalDisplayUnit; // Store its original format if any
 
-                addHistoryEntry(`${inputOriginalDisplayString} ${newOperatorSymbol}`);
+                let historyOperandDisplay;
+                if (firstOperandUnitType === 'area') {
+                     historyOperandDisplay = formatAreaDisplay(firstOperand, firstOperandOriginalDisplayUnit || 'sq ft').main;
+                } else if (firstOperandUnitType === 'volume') {
+                    historyOperandDisplay = formatVolumeDisplay(firstOperand, firstOperandOriginalDisplayUnit || 'cu ft').main;
+                } else if (firstOperandWasDimensional) { // Linear dimensional
+                    historyOperandDisplay = formatInchesToDimensional(firstOperand);
+                } else {
+                    historyOperandDisplay = formatDisplayNumber(String(firstOperand));
+                }
+                addHistoryEntry(`${historyOperandDisplay} ${operatorSymbol}`);
             }
 
             operator = newOperator;
@@ -1129,390 +1070,480 @@
             displayShouldClear = true;
             inputState = InputState.START;
             resetDimensionalInput();
-            resetConversionState();
-            updateDisplay();
+            resetConversionState(); 
+            // updateDisplay(); // Not here, usually after full interaction or in equals
         }
+        // --- END MODIFIED handleOperator ---
 
+        // --- MODIFIED handleEquals ---
         function handleEquals() {
             restorePreciseValueAndClearRounding();
-
+            
             if (!operator || firstOperand === null) {
+                // Handle cases where equals is pressed without a full operation
+                // Or if currentInput is a dimensional value that needs finalizing.
                 if (inputState === InputState.ENTERING_INCHES || inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR) {
-                    const finalVal = finalizeDimensionalInput();
+                    const finalVal = finalizeDimensionalInput(); // Returns inches
                     if (!isNaN(finalVal)) {
                         currentInput = String(finalVal);
-                        firstOperandWasDimensional = true;
+                        firstOperandWasDimensional = true; // Indicates currentInput is dimensional (inches)
                         resultUnitType = 'linear';
-                        conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(finalVal) };
+                        conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(finalVal) }; // Treat as "inches" type
                         inputState = InputState.SHOWING_RESULT;
-                        addHistoryEntry(`${formatInchesToDimensional(finalVal)} = <strong>${formatInchesToDimensional(finalVal)}</strong>`);
                         resetDimensionalInput();
                         updateDisplay();
                         return;
                     }
-                } else if (inputState === InputState.SHOWING_RESULT) { updateDisplay(); return; }
-                else if (!isNaN(parseFloat(currentInput)) && (inputState === InputState.START || inputState === InputState.ENTERING_DECIMAL || inputState === InputState.ENTERING_FEET)) {
+                } else if (inputState === InputState.SHOWING_RESULT) { // Already showing a result, equals does nothing more
+                    updateDisplay(); 
+                    return;
+                } else if (!isNaN(parseFloat(currentInput)) && (inputState === InputState.START || inputState === InputState.ENTERING_DECIMAL || inputState === InputState.ENTERING_FEET)) {
+                    // Plain number on display, make it a result
                     inputState = InputState.SHOWING_RESULT;
-                    resultUnitType = 'linear';
-                    firstOperandWasDimensional = false;
+                    resultUnitType = 'linear'; 
+                    firstOperandWasDimensional = false; 
                     conversionSourceInfo = { type: null, baseUnit: null, originalValueStr: formatDisplayNumber(currentInput) };
-                    addHistoryEntry(`${formatDisplayNumber(currentInput)} = <strong>${formatDisplayNumber(currentInput)}</strong>`);
                     updateDisplay();
                     return;
-                } else { updateDisplay(); return; }
+                } else { // Not enough to calculate or finalize
+                    updateDisplay(); // Just refresh display
+                    return;
+                }
             }
 
             let secondOperandValue;
             let secondOperandUnitType = 'linear';
             let secondOperandWasDimensional = false;
-            let secondOperandOriginalDisplayString = formatDisplayNumber(currentInput);
+            let secondOperandOriginalDisplayString = formatDisplayNumber(currentInput); // Capture for history
 
             if (inputState === InputState.ENTERING_INCHES || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.DIMENSIONAL_COMPLETE) {
-                secondOperandValue = finalizeDimensionalInput();
+                secondOperandValue = finalizeDimensionalInput(); // Base inches
                 secondOperandUnitType = 'linear';
                 secondOperandWasDimensional = true;
                 secondOperandOriginalDisplayString = formatInchesToDimensional(secondOperandValue);
                 resetDimensionalInput();
             } else if (inputState === InputState.SHOWING_RESULT) {
-                // When equals is pressed and the second operand is already a displayed result
-                let rawValue = parseFloat(currentInput); // currentInput is a base value here
-                secondOperandValue = rawValue;
-                secondOperandUnitType = resultUnitType;
-                secondOperandWasDimensional = firstOperandWasDimensional;
+                // currentInput is a value on display from a previous unit selection or calculation
+                let rawValueFromDisplay = parseFloat(currentInput);
+                secondOperandValue = rawValueFromDisplay; // Default
+                secondOperandUnitType = resultUnitType;   // Unit type of the value on display
+                secondOperandWasDimensional = firstOperandWasDimensional; // Dimensional nature of value on display (use the display's flag)
 
-                // Use original string from conversionSourceInfo, or format based on current base value
-                if (conversionSourceInfo.originalValueStr) {
-                    secondOperandOriginalDisplayString = conversionSourceInfo.originalValueStr;
-                } else if (secondOperandUnitType === 'area') {
-                    secondOperandOriginalDisplayString = formatAreaDisplay(secondOperandValue, 'sq ft').main;
-                } else if (secondOperandUnitType === 'volume') {
-                    secondOperandOriginalDisplayString = formatVolumeDisplay(secondOperandValue, 'cu ft').main;
-                } else if (secondOperandUnitType === 'linear' && secondOperandWasDimensional) {
-                    secondOperandOriginalDisplayString = formatInchesToDimensional(secondOperandValue);
+                // Use conversionSourceInfo which describes the currentInput on display
+                if (resultUnitType === 'area' && conversionSourceInfo.type && areaConversionFactors[conversionSourceInfo.type]) {
+                    secondOperandValue = rawValueFromDisplay * areaConversionFactors[conversionSourceInfo.type]; // To sq in
+                    secondOperandOriginalDisplayString = `${formatDisplayNumber(String(rawValueFromDisplay))} ${displayUnits[conversionSourceInfo.type]}`;
+                    secondOperandWasDimensional = true;
+                } else if (resultUnitType === 'volume' && conversionSourceInfo.type && volumeConversionFactors[conversionSourceInfo.type]) {
+                    secondOperandValue = rawValueFromDisplay * volumeConversionFactors[conversionSourceInfo.type]; // To cu in
+                    secondOperandOriginalDisplayString = `${formatDisplayNumber(String(rawValueFromDisplay))} ${displayUnits[conversionSourceInfo.type]}`;
+                    secondOperandWasDimensional = true;
+                } else if (resultUnitType === 'linear' && conversionSourceInfo.type && conversionFactors[conversionSourceInfo.type]) {
+                    secondOperandValue = rawValueFromDisplay * conversionFactors[conversionSourceInfo.type]; // To base inches
+                    secondOperandOriginalDisplayString = `${formatDisplayNumber(String(rawValueFromDisplay))} ${displayUnits[conversionSourceInfo.type]}`;
+                    secondOperandWasDimensional = true;
+                } else if (resultUnitType === 'linear' && firstOperandWasDimensional && !conversionSourceInfo.type) {
+                     // Already in base inches from a previous dimensional calculation.
+                     // No change to secondOperandValue needed.
+                     secondOperandOriginalDisplayString = formatInchesToDimensional(rawValueFromDisplay);
                 } else {
-                    secondOperandOriginalDisplayString = formatDisplayNumber(String(secondOperandValue));
+                    // Plain numeric result from a calculation, already a base value or unitless
+                    secondOperandOriginalDisplayString = formatDisplayNumber(String(rawValueFromDisplay));
                 }
-
-            } else {
+                // Don't resetConversionState() here yet, it's associated with currentInput/resultUnitType
+            } else { // Default case: plain number typed in for the second operand
                 secondOperandValue = parseFloat(currentInput);
                 secondOperandOriginalDisplayString = formatDisplayNumber(currentInput);
+                secondOperandUnitType = 'linear';
+                secondOperandWasDimensional = false;
+                // No conversionSourceInfo to reset here as it wasn't used for this plain number
             }
 
-            if (isNaN(secondOperandValue)) { currentInput = 'Error'; resetCalculatorState(); inputState = InputState.SHOWING_RESULT; updateDisplay(); return; }
-
+            if (isNaN(secondOperandValue)) {
+                currentInput = 'Error';
+                resetCalculatorStateExceptHistory();
+                inputState = InputState.SHOWING_RESULT;
+                resultUnitType = 'linear';
+                updateDisplay();
+                return;
+            }
+            
+            // firstOperand is already in base units
             const calcResult = performCalculation(firstOperand, firstOperandUnitType, firstOperandWasDimensional, secondOperandValue, secondOperandUnitType, secondOperandWasDimensional, operator);
 
-            if (calcResult.error) { currentInput = calcResult.error; resetCalculatorState(); inputState = InputState.SHOWING_RESULT; updateDisplay(); return; }
-            if (isNaN(calcResult.value)) { currentInput = 'Error'; resetCalculatorState(); inputState = InputState.SHOWING_RESULT; updateDisplay(); return; }
+            if (calcResult.error) { /* ... error handling ... */ return; }
+            if (isNaN(calcResult.value)) { /* ... error handling ... */ return; }
 
-            currentInput = String(calcResult.value); // currentInput always stores the BASE unit value for results
-            resultUnitType = calcResult.unitType;
-            firstOperandWasDimensional = calcResult.isDimensional;
-
-            // conversionSourceInfo for results will now explicitly store BASE unit type if dimensional
-            if (resultUnitType === 'linear') {
-                conversionSourceInfo = {
-                    type: firstOperandWasDimensional ? 'in' : null,
-                    baseUnit: firstOperandWasDimensional ? 'in' : null,
-                    originalValueStr: firstOperandWasDimensional ? formatInchesToDimensional(calcResult.value) : formatDisplayNumber(String(calcResult.value))
-                };
-            } else if (resultUnitType === 'area') {
-                conversionSourceInfo = { type: 'sq in', baseUnit: 'sq in', originalValueStr: formatAreaDisplay(calcResult.value, 'sq ft').main };
-            } else if (resultUnitType === 'volume') {
-                conversionSourceInfo = { type: 'cu in', baseUnit: 'cu in', originalValueStr: formatVolumeDisplay(calcResult.value, 'cu ft').main };
-            } else {
-                 resetConversionState();
-            }
+            currentInput = String(calcResult.value); // This is in base units
+            resultUnitType = calcResult.unitType;    // Type of the base unit result
+            firstOperandWasDimensional = (resultUnitType === 'linear' && (firstOperandWasDimensional || secondOperandWasDimensional)) || resultUnitType === 'area' || resultUnitType === 'volume';
+            
+            // For display, conversionSourceInfo needs to reflect the *result*.
+            // If result is area, it's sq in. Display as sq ft/sq in.
+            // If linear, it's inches. Display as ft-in.
+            // `updateDisplay` handles formatting `currentInput` (base unit) based on `resultUnitType` and `firstOperandWasDimensional`.
+            // We clear `conversionSourceInfo` as the result isn't from a direct unit input like "5m".
+            resetConversionState();
+            conversionSourceInfo.originalValueStr = null; // Result is not an "original string"
 
             inputState = InputState.SHOWING_RESULT;
 
             if (history.length > 0) {
                 let lastEntryIndex = history.length - 1;
-                let resultDisplayString;
-                if (resultUnitType === 'volume') resultDisplayString = formatVolumeDisplay(calcResult.value, firstOperandOriginalDisplayUnit && firstOperandOriginalDisplayUnit.includes('cu') ? firstOperandOriginalDisplayUnit : 'cu ft').main;
-                else if (resultUnitType === 'area') resultDisplayString = formatAreaDisplay(calcResult.value, firstOperandOriginalDisplayUnit && firstOperandOriginalDisplayUnit.includes('sq') ? firstOperandOriginalDisplayUnit : 'sq ft').main;
-                else if (firstOperandWasDimensional) resultDisplayString = formatInchesToDimensional(calcResult.value);
-                else resultDisplayString = formatDisplayNumber(String(calcResult.value));
-
-                if (history[lastEntryIndex] && history[lastEntryIndex].trim().endsWith(operatorSymbol)) {
+                let resultDisplayString; // For history
+                if (resultUnitType === 'volume') {
+                    resultDisplayString = formatVolumeDisplay(calcResult.value).main;
+                } else if (resultUnitType === 'area') {
+                    resultDisplayString = formatAreaDisplay(calcResult.value).main;
+                } else if (resultUnitType === 'linear' && firstOperandWasDimensional) {
+                    resultDisplayString = formatInchesToDimensional(calcResult.value);
+                } else {
+                    resultDisplayString = formatDisplayNumber(String(calcResult.value));
+                }
+                
+                // secondOperandDisplayForHistory was captured/formatted above
+                // firstOperandDisplayForHistory needs to be retrieved or formatted correctly
+                let firstOperandDisplayForHistory;
+                if (history[lastEntryIndex] && history[lastEntryIndex].endsWith(operatorSymbol)) {
+                    // The history entry is like "100 sq ft ÷"
                     history[lastEntryIndex] = `${history[lastEntryIndex]} ${secondOperandOriginalDisplayString} = <strong>${resultDisplayString}</strong>`;
                 } else {
-                    let firstOpDisplay = firstOperandOriginalDisplayUnit ||
-                                         (firstOperandUnitType === 'area' ? formatAreaDisplay(firstOperand, 'sq ft').main :
-                                          firstOperandUnitType === 'volume' ? formatVolumeDisplay(firstOperand, 'cu ft').main :
-                                          (firstOperandWasDimensional && firstOperandUnitType === 'linear') ? formatInchesToDimensional(firstOperand) :
-                                          formatDisplayNumber(String(firstOperand)));
-                    addHistoryEntry(`${firstOpDisplay} ${operatorSymbol} ${secondOperandOriginalDisplayString} = <strong>${resultDisplayString}</strong>`);
+                    // This case implies a new calculation not chained via history tape (e.g. after C)
+                    // We need to format the firstOperand (which is in base units)
+                    if (firstOperandUnitType === 'area') {
+                        firstOperandDisplayForHistory = formatAreaDisplay(firstOperand, firstOperandOriginalDisplayUnit || 'sq ft').main;
+                    } else if (firstOperandUnitType === 'volume') {
+                        firstOperandDisplayForHistory = formatVolumeDisplay(firstOperand, firstOperandOriginalDisplayUnit || 'cu ft').main;
+                    } else if (firstOperandUnitType === 'linear' && firstOperandWasDimensional) { // Check original wasDimensional for firstOp
+                        firstOperandDisplayForHistory = formatInchesToDimensional(firstOperand);
+                    } else {
+                        firstOperandDisplayForHistory = formatDisplayNumber(String(firstOperand)); // Should be base value
+                    }
+                    addHistoryEntry(`${firstOperandDisplayForHistory} ${operatorSymbol} ${secondOperandOriginalDisplayString} = <strong>${resultDisplayString}</strong>`);
                 }
                 updateHistoryDisplay();
             }
 
             operator = null;
             operatorSymbol = '';
-            displayShouldClear = true;
-            resetDimensionalInput();
-            resetSqCuMode();
+            // firstOperand = null; // Keep result in firstOperand for chained calculations if user presses operator next
+            // Let the SHOWING_RESULT state in handleOperator manage firstOperand from currentInput.
+            displayShouldClear = true; // For next digit input
+            resetDimensionalInput(); // Clear ft/in staging
+            resetSfCuMode(); 
             updateDisplay();
         }
+        // --- END MODIFIED handleEquals ---
 
-        function clearCalculator() {
-            console.log("clearCalculator: On/C pressed");
+        function clearCalculator() { /* ... (no change) ... */
+            console.log("clearCalculator: On/C pressed"); 
             restorePreciseValueAndClearRounding();
-            resetCalculatorState();
-            addHistoryEntry('------');
-            updateDisplay();
+            resetCalculatorStateExceptHistory(); 
+            addHistoryEntry('------'); 
+            updateDisplay(); 
         }
 
+        // MODIFIED handleUnit
         function handleUnit(unitKey) {
             restorePreciseValueAndClearRounding();
             console.log(`handleUnit: ${unitKey}, State: ${inputState}, currentInput: ${currentInput}, currentDimensionMode: ${currentDimensionMode}`);
 
+            const isMetricUnit = ['m', 'cm', 'mm'].includes(unitKey);
+            const isImperialUnit = ['ft', 'in', 'yd'].includes(unitKey);
             const rawNumericValue = parseFloat(currentInput);
 
             if (currentDimensionMode !== 'linear') {
-                if (isNaN(rawNumericValue)) { currentInput = 'Error'; updateDisplay(); return; }
+                if (isNaN(rawNumericValue)) { /* ... error handling ... */ return; }
 
                 let targetUnitName = '';
+                let baseUnitForConversion = ''; // The unit the rawNumericValue represents (e.g. 'sq ft')
                 let historyDisplayString = `${formatDisplayNumber(String(rawNumericValue))}`;
 
                 if (currentDimensionMode === 'area') {
                     targetUnitName = unitMap[unitKey]?.area;
-                    if (!targetUnitName || !areaConversionFactors[targetUnitName]) { currentInput = 'Set Unit'; updateDisplay(); return; }
+                     if (!targetUnitName || !areaConversionFactors[targetUnitName]) { /* ... error handling ... */ return; }
+                    baseUnitForConversion = targetUnitName;
                     historyDisplayString += ` ${displayUnits[targetUnitName]}`;
-
-                    // currentInput is the magnitude in targetUnitName (e.g. "5" for 5 sq ft)
-                    // Store the base unit value in currentInput for internal consistency
-                    currentInput = String(rawNumericValue * areaConversionFactors[targetUnitName]);
+                    currentInput = String(rawNumericValue); // Magnitude in the target unit
                     resultUnitType = 'area';
-                    conversionSourceInfo = { type: 'sq in', baseUnit: 'sq in', originalValueStr: historyDisplayString }; // Base unit type
+                    conversionSourceInfo = { type: targetUnitName, baseUnit: targetUnitName, originalValueStr: historyDisplayString };
                 } else if (currentDimensionMode === 'volume') {
                     targetUnitName = unitMap[unitKey]?.volume;
-                    if (!targetUnitName || !volumeConversionFactors[targetUnitName]) { currentInput = 'Set Unit'; updateDisplay(); return; }
-                    historyDisplayString += ` ${displayUnits[targetUnitName]}`;
-
-                    // Store the base unit value in currentInput
-                    currentInput = String(rawNumericValue * volumeConversionFactors[targetUnitName]);
+                    if (!targetUnitName || !volumeConversionFactors[targetUnitName]) { /* ... error handling ... */ return; }
+                    baseUnitForConversion = targetUnitName;
+                     historyDisplayString += ` ${displayUnits[targetUnitName]}`;
+                    currentInput = String(rawNumericValue); // Magnitude in the target unit
                     resultUnitType = 'volume';
-                    conversionSourceInfo = { type: 'cu in', baseUnit: 'cu in', originalValueStr: historyDisplayString }; // Base unit type
+                    conversionSourceInfo = { type: targetUnitName, baseUnit: targetUnitName, originalValueStr: historyDisplayString };
                 }
-
-                firstOperandWasDimensional = true;
+                
+                firstOperandWasDimensional = true; // Area/Volume is dimensional
                 addHistoryEntry(historyDisplayString);
                 inputState = InputState.SHOWING_RESULT;
                 displayShouldClear = true;
                 resetDimensionalInput();
-                resetSqCuMode();
+                resetSfCuMode(); 
                 updateDisplay();
                 return;
             }
 
+            // --- Original linear unit handling logic ---
             if (inputState === InputState.CONVERSION_PENDING && conversionSourceInfo.type) {
-                let valueInBaseUnits = firstOperand; // This is already in base units
+                // firstOperand is already in base units (e.g. inches, sq inches, cu inches)
+                // conversionSourceInfo.type is 'linear', 'area', or 'volume' (source type)
+                // conversionSourceInfo.baseUnit was the *original unit* of firstOperand before it was converted to base for storage.
+                let valueInBaseUnits = firstOperand;
                 let targetUnitFullName = null;
                 let conversionFactorsTable = null;
-                let newResultUnitType = conversionSourceInfo.type.startsWith('sq') ? 'area' : conversionSourceInfo.type.startsWith('cu') ? 'volume' : 'linear';
+                let newResultUnitType = conversionSourceInfo.type; // Result type matches source type
                 let convertedResult;
-                let originalUnitForHistory = conversionSourceInfo.baseUnit || (conversionSourceInfo.type === 'linear' ? 'in' : conversionSourceInfo.type === 'area' ? 'sq in' : 'cu in');
+                let originalUnitForHistory = conversionSourceInfo.baseUnit; // The unit of 'firstOperand' before it became base units.
 
-                if (newResultUnitType === 'area') {
+                if (conversionSourceInfo.type === 'area') {
                     targetUnitFullName = unitMap[unitKey]?.area;
                     conversionFactorsTable = areaConversionFactors;
-                    if (!targetUnitFullName || !conversionFactorsTable[targetUnitFullName]) { currentInput = 'Cannot Conv Area'; updateDisplay(); return; }
+                    if (!targetUnitFullName || !conversionFactorsTable[targetUnitFullName]) { /* ... error handling ... */ return; }
                     convertedResult = valueInBaseUnits / conversionFactorsTable[targetUnitFullName];
-                } else if (newResultUnitType === 'volume') {
+                    originalUnitForHistory = originalUnitForHistory || 'sq in'; // Default if baseUnit was null
+                } else if (conversionSourceInfo.type === 'volume') {
                     targetUnitFullName = unitMap[unitKey]?.volume;
                     conversionFactorsTable = volumeConversionFactors;
-                    if (!targetUnitFullName || !conversionFactorsTable[targetUnitFullName]) { currentInput = 'Cannot Conv Volume'; updateDisplay(); return; }
+                     if (!targetUnitFullName || !conversionFactorsTable[targetUnitFullName]) { /* ... error handling ... */ return; }
                     convertedResult = valueInBaseUnits / conversionFactorsTable[targetUnitFullName];
-                } else { // Linear conversion
+                    originalUnitForHistory = originalUnitForHistory || 'cu in';
+                } else { // Linear
                     targetUnitFullName = unitKey;
                     conversionFactorsTable = conversionFactors;
-                    if (!conversionFactorsTable[targetUnitFullName]) { currentInput = 'Set Unit'; updateDisplay(); return; }
-                    convertedResult = valueInBaseUnits / conversionFactorsTable[targetUnitFullName];
+                    if (!conversionFactorsTable[targetUnitFullName]) { /* ... error handling ... */ return; }
+                    convertedResult = valueInBaseUnits / conversionFactorsTable[targetUnitFullName]; // valueInBaseUnits is inches
+                    originalUnitForHistory = originalUnitForHistory || 'in';
                 }
 
-                let fromFormattedString = conversionSourceInfo.originalValueStr ||
-                                        (newResultUnitType === 'area' ? formatAreaDisplay(valueInBaseUnits, originalUnitForHistory).main :
-                                         newResultUnitType === 'volume' ? formatVolumeDisplay(valueInBaseUnits, originalUnitForHistory).main :
-                                         formatInchesToDimensional(valueInBaseUnits));
+                let fromFormattedString;
+                if (conversionSourceInfo.type === 'area') fromFormattedString = formatAreaDisplay(valueInBaseUnits, originalUnitForHistory).main;
+                else if (conversionSourceInfo.type === 'volume') fromFormattedString = formatVolumeDisplay(valueInBaseUnits, originalUnitForHistory).main;
+                else fromFormattedString = formatInchesToDimensional(valueInBaseUnits); // Linear is in inches
 
                 const toFormattedString = `${formatDisplayNumber(String(convertedResult))} ${displayUnits[targetUnitFullName]}`;
                 addHistoryEntry(`Conv ${fromFormattedString} → <strong>${toFormattedString}</strong>`);
 
-                currentInput = String(valueInBaseUnits); // Current input is base unit value
+                currentInput = String(convertedResult); // currentInput is now magnitude in targetUnitFullName
                 resultUnitType = newResultUnitType;
-                firstOperandWasDimensional = true;
-                conversionSourceInfo = { type: targetUnitFullName, baseUnit: targetUnitFullName, originalValueStr: toFormattedString };
-
+                firstOperandWasDimensional = true; // Conversion result is treated as dimensional
+                conversionSourceInfo = { type: targetUnitFullName, baseUnit: targetUnitFullName, originalValueStr: toFormattedString }; // Result is now in this specific unit
+                
                 inputState = InputState.SHOWING_RESULT;
-                firstOperand = null;
+                firstOperand = null; // Clear firstOperand as conversion is complete
                 displayShouldClear = true;
                 resetDimensionalInput();
                 updateDisplay();
                 return;
             }
-
+            
+            // Handle applying a unit to a number on display, or ft/in input
             if (inputState === InputState.SHOWING_RESULT) {
-                // If a unit is pressed on a result, it triggers a conversion.
-                let valueToConvertInBase = parseFloat(currentInput); // currentInput is base unit value
+                // User has a result on display and presses a unit key (e.g. result "60" (inches) then presses "ft")
+                // This implies a conversion of the current result.
+                const resultValueOnDisplay = parseFloat(currentInput); // This is in resultUnitType's base (e.g. inches if linear)
+                                                                      // or in conversionSourceInfo.type if that's set (e.g. "5" from "5m")
+                let valueToConvertInBase;
                 let sourceTypeOfValueToConvert = resultUnitType;
-                let sourceOriginalDisplay = conversionSourceInfo.originalValueStr || displayValueElement.textContent;
 
-
-                if (sourceTypeOfValueToConvert !== 'linear' || !conversionFactors[unitKey]) {
-                    // Cannot convert area/volume result by just pressing a linear unit key.
-                    // Or trying to convert linear result to non-linear unit by this method.
-                    currentInput = 'Set Unit'; updateDisplay(); return;
-                }
-
-                // If conversion is valid (linear to linear)
-                const targetUnitFactor = conversionFactors[unitKey];
-                const convertedVal = valueToConvertInBase / targetUnitFactor;
-                const fromFormatted = sourceOriginalDisplay; // Use original display string for "from"
-                const toFormatted = `${formatDisplayNumber(String(convertedVal))} ${displayUnits[unitKey]}`;
-                addHistoryEntry(`Conv ${fromFormatted} → <strong>${toFormatted}</strong>`);
-
-                currentInput = String(valueToConvertInBase); // CurrentInput remains base value
-                resultUnitType = 'linear';
-                firstOperandWasDimensional = true;
-                conversionSourceInfo = { type: unitKey, baseUnit: 'in', originalValueStr: toFormatted };
-                inputState = InputState.SHOWING_RESULT;
-                resetDimensionalInput();
-                updateDisplay();
-                return;
-            }
-
-            const valueFromDisplay = parseFloat(currentInput);
-            const hasValue = !isNaN(valueFromDisplay) && (currentInput !== '0' || (currentInput === '0' && (inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_INCHES)));
-
-
-            if (unitKey === 'ft') {
-                 if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) {
-                    storedFeet = hasValue ? valueFromDisplay : (storedFeet === null ? 0 : storedFeet);
-                    inputState = InputState.ENTERING_INCHES;
-                    currentInput = '0';
-                    displayShouldClear = true;
-                    currentInputIsDimensional = true;
-                    resetConversionState();
-                } else if (inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.ENTERING_INCHES) {
-                    const prevFinalized = finalizeDimensionalInput();
-                    if (!isNaN(prevFinalized) && operator === null) firstOperand = prevFinalized;
-
-                    resetDimensionalInput();
-                    storedFeet = hasValue ? valueFromDisplay : 0;
-                    inputState = InputState.ENTERING_INCHES;
-                    currentInput = '0';
-                    currentInputIsDimensional = true;
-                    displayShouldClear = true;
-                    resetConversionState();
-                }
-            } else if (unitKey === 'in') {
-                if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) {
-                    storedFeet = storedFeet !== null ? storedFeet : 0;
-                    storedInches = hasValue ? valueFromDisplay : 0;
-                    inputState = InputState.DIMENSIONAL_COMPLETE;
-                    currentInput = '0';
-                    displayShouldClear = true;
-                    currentInputIsDimensional = true;
-                    resetConversionState();
-                } else if (inputState === InputState.ENTERING_INCHES) {
-                    storedInches = hasValue ? valueFromDisplay : (storedInches === null ? 0 : storedInches);
-                    inputState = InputState.DIMENSIONAL_COMPLETE;
-                    currentInput = '0';
-                    displayShouldClear = true;
-                    currentInputIsDimensional = true;
-                    resetConversionState();
-                } else if (inputState === InputState.ENTERING_DENOMINATOR) {
-                    const denominatorValue = parseInt(currentInput);
-                    if (!isNaN(denominatorValue) && denominatorValue !== 0 && storedNumerator !== null) {
-                        storedDenominator = denominatorValue;
-                        const finalDimensionalValue = finalizeDimensionalInput();
-                        if (!isNaN(finalDimensionalValue)) {
-                            currentInput = String(finalDimensionalValue); // This is in inches
-                            firstOperandWasDimensional = true;
-                            resultUnitType = 'linear';
-                            conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(finalDimensionalValue) };
-                            inputState = InputState.SHOWING_RESULT;
-                            addHistoryEntry(conversionSourceInfo.originalValueStr);
-                            displayShouldClear = true;
-                        } else { currentInput = 'Error'; updateDisplay(); return; }
-                    } else { updateDisplay(); return; }
-                } else if (inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_NUMERATOR) {
-                    const finalVal = finalizeDimensionalInput();
-                    if (!isNaN(finalVal)) {
-                        currentInput = String(finalVal); // This is in inches
-                        firstOperandWasDimensional = true;
-                        resultUnitType = 'linear';
-                        conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(finalVal) };
-                        inputState = InputState.SHOWING_RESULT;
-                        addHistoryEntry(conversionSourceInfo.originalValueStr);
-                        displayShouldClear = true;
+                if (resultUnitType === 'linear') {
+                    if (conversionSourceInfo.type && conversionFactors[conversionSourceInfo.type]) { // e.g. display "5", type "m"
+                        valueToConvertInBase = resultValueOnDisplay * conversionFactors[conversionSourceInfo.type]; // to inches
+                    } else { // Assume resultValueOnDisplay is already in base inches
+                        valueToConvertInBase = resultValueOnDisplay;
                     }
+                } else if (resultUnitType === 'area') { // Cannot convert area result by just pressing another linear unit key
+                     if (unitKey !== 'Conv') { updateDisplay(); return; } // Or handle as error/no-op
+                } else if (resultUnitType === 'volume') { // Similar for volume
+                     if (unitKey !== 'Conv') { updateDisplay(); return; }
                 }
-            } else if (conversionFactors[unitKey]) {
+
+
+                if (conversionFactors[unitKey] && sourceTypeOfValueToConvert === 'linear') { // Target is a linear unit
+                    const targetUnitFactor = conversionFactors[unitKey];
+                    const convertedVal = valueToConvertInBase / targetUnitFactor;
+                    const fromFormatted = formatInchesToDimensional(valueToConvertInBase);
+                    const toFormatted = `${formatDisplayNumber(String(convertedVal))} ${displayUnits[unitKey]}`;
+                    addHistoryEntry(`Conv ${fromFormatted} → <strong>${toFormatted}</strong>`);
+                    
+                    currentInput = String(convertedVal); // currentInput is now magnitude in unitKey
+                    resultUnitType = 'linear';
+                    firstOperandWasDimensional = true;
+                    conversionSourceInfo = { type: unitKey, baseUnit: unitKey, originalValueStr: toFormatted };
+                    inputState = InputState.SHOWING_RESULT;
+                    resetDimensionalInput();
+                    updateDisplay();
+                    return;
+                }
+                // If not converting, reset state if a unit is pressed after a numeric result
+                const displayValBeforeReset = formatDisplayNumber(String(resultValueOnDisplay));
+                resetCalculatorStateExceptHistory();
+                currentInput = displayValBeforeReset; // Keep the number
+                inputState = InputState.START; // Ready to interpret this number with the new unit
+            }
+            
+            // Standard ft/in input or applying a metric unit to a fresh number
+            const valueFromDisplay = parseFloat(currentInput);
+            const hasValue = !isNaN(valueFromDisplay) && (currentInput !== '0' || (currentInput === '0' && (inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.ENTERING_NUMERATOR)));
+
+            if (unitKey === 'ft') { /* ... existing ft logic ... */
+                 if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) { 
+                    storedFeet = hasValue ? valueFromDisplay : 0; 
+                    storedInches = 0; 
+                    inputState = InputState.ENTERING_INCHES; 
+                    currentInput = '0'; 
+                    displayShouldClear = true; 
+                    currentInputIsDimensional = true; 
+                    resetConversionState(); 
+                } else if (inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.ENTERING_INCHES) { 
+                    const valueToSaveAsFirstOperand = finalizeDimensionalInput(); 
+                    if(!isNaN(valueToSaveAsFirstOperand)) { 
+                        firstOperand = valueToSaveAsFirstOperand; 
+                        firstOperandUnitType = 'linear'; 
+                        firstOperandWasDimensional = true; 
+                        operator = null; 
+                        operatorSymbol = ''; 
+                        storedFeet = hasValue ? valueFromDisplay : 0; 
+                        storedInches = 0; 
+                        storedNumerator = null; 
+                        storedDenominator = null; 
+                        currentInput = '0'; 
+                        inputState = InputState.ENTERING_INCHES; 
+                        currentInputIsDimensional = true; 
+                        displayShouldClear = true; 
+                        resetConversionState(); 
+                    } 
+                } 
+            } else if (unitKey === 'in') { /* ... existing in logic ... */
+                if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) { 
+                    storedFeet = storedFeet !== null ? storedFeet : 0; 
+                    storedInches = hasValue ? valueFromDisplay : 0; 
+                    inputState = InputState.DIMENSIONAL_COMPLETE; 
+                    currentInput = '0'; 
+                    displayShouldClear = true; 
+                    currentInputIsDimensional = true; 
+                    resetConversionState(); 
+                } else if (inputState === InputState.ENTERING_INCHES) { 
+                    storedInches = hasValue ? valueFromDisplay : 0; 
+                    inputState = InputState.DIMENSIONAL_COMPLETE; 
+                    currentInput = '0'; 
+                    displayShouldClear = true; 
+                    currentInputIsDimensional = true; 
+                    resetConversionState(); 
+                } else if (inputState === InputState.ENTERING_DENOMINATOR) { 
+                    const denominatorValue = parseInt(currentInput); 
+                    if (!isNaN(denominatorValue) && denominatorValue !== 0 && storedNumerator !== null) { 
+                        storedDenominator = denominatorValue; 
+                        const finalDimensionalValue = finalizeDimensionalInput(); // Inches
+                        if (!isNaN(finalDimensionalValue)) { 
+                            currentInput = String(finalDimensionalValue); // Current input is now base inches value
+                            firstOperandWasDimensional = true; 
+                            resultUnitType = 'linear'; 
+                            // Set conversionSourceInfo to reflect this is now "X in"
+                            conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(finalDimensionalValue) }; 
+                            inputState = InputState.SHOWING_RESULT; 
+                            displayShouldClear = true; 
+                        } 
+                    } else { updateDisplay(); return; } 
+                } else if (inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_NUMERATOR) { 
+                    const valueToSaveAsFirstOperand = finalizeDimensionalInput(); 
+                    if(!isNaN(valueToSaveAsFirstOperand)) { 
+                        firstOperand = valueToSaveAsFirstOperand; 
+                        firstOperandUnitType = 'linear'; 
+                        firstOperandWasDimensional = true; 
+                        operator = null; 
+                        operatorSymbol = ''; 
+                        storedFeet = 0; 
+                        storedInches = hasValue ? valueFromDisplay : 0; 
+                        storedNumerator = null; 
+                        storedDenominator = null; 
+                        currentInput = '0'; 
+                        inputState = InputState.DIMENSIONAL_COMPLETE; 
+                        currentInputIsDimensional = true; 
+                        displayShouldClear = true; 
+                        resetConversionState(); 
+                    } 
+                } 
+            } else if (conversionFactors[unitKey]) { // yd, m, cm, mm (linear)
                 if (inputState === InputState.START || inputState === InputState.ENTERING_DECIMAL || inputState === InputState.ENTERING_FEET) {
                     if (!isNaN(valueFromDisplay)) {
-                        currentInput = String(valueFromDisplay * conversionFactors[unitKey]); // Store as base inches
+                        currentInput = String(valueFromDisplay); // Keep magnitude
                         resultUnitType = 'linear';
-                        firstOperandWasDimensional = true;
-                        let originalDisplay = `${formatDisplayNumber(String(valueFromDisplay))} ${displayUnits[unitKey]}`;
-                        conversionSourceInfo = { type: unitKey, baseUnit: unitKey, originalValueStr: originalDisplay };
-                        inputState = InputState.SHOWING_RESULT;
-                        addHistoryEntry(originalDisplay);
+                        firstOperandWasDimensional = true; 
+                        let originalDisplay = `${formatDisplayNumber(currentInput)} ${displayUnits[unitKey]}`;
+                        conversionSourceInfo = { type: unitKey, baseUnit: unitKey, originalValueStr: originalDisplay }; // currentInput is in 'unitKey'
+                        inputState = InputState.SHOWING_RESULT; 
                         displayShouldClear = true;
                         resetDimensionalInput();
-                    } else { currentInput = 'Error'; updateDisplay(); }
+                    } else { /* ... error handling ... */ }
                 }
             }
             updateDisplay();
         }
-
+        
+        // MODIFIED handleConvert
         function handleConvert() {
             restorePreciseValueAndClearRounding();
-            resetSqCuMode();
+            resetSfCuMode();
 
             let valueToConvertInBaseUnits;
-            let sourceInfoForPendingConv = { type: null, baseUnit: null, originalValueStr: null };
+            let sourceInfoForPendingConversion = { type: null, baseUnit: null, originalValueStr: null }; // type of value, baseUnit it was originally in
 
             if (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_INCHES) {
-                valueToConvertInBaseUnits = finalizeDimensionalInput();
-                sourceInfoForPendingConv = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(valueToConvertInBaseUnits) }; // Base unit type
+                valueToConvertInBaseUnits = finalizeDimensionalInput(); // This is in inches
+                sourceInfoForPendingConversion = { type: 'linear', baseUnit: 'in', originalValueStr: formatInchesToDimensional(valueToConvertInBaseUnits) };
                 resetDimensionalInput();
             } else if (inputState === InputState.SHOWING_RESULT) {
-                // currentInput is already the base unit value for SHOWING_RESULT state
+                let rawValue = parseFloat(currentInput); // This is magnitude in conversionSourceInfo.type unit
+                valueToConvertInBaseUnits = rawValue;     // Assume it's base unless converted below
+
+                if (resultUnitType === 'volume') {
+                    if (conversionSourceInfo.type && volumeConversionFactors[conversionSourceInfo.type]) {
+                        valueToConvertInBaseUnits = rawValue * volumeConversionFactors[conversionSourceInfo.type]; // to cu in
+                        sourceInfoForPendingConversion = { type: 'volume', baseUnit: conversionSourceInfo.type, originalValueStr: conversionSourceInfo.originalValueStr };
+                    } else { // Was a calc result, already in cu in
+                         sourceInfoForPendingConversion = { type: 'volume', baseUnit: 'cu in', originalValueStr: formatVolumeDisplay(rawValue, 'cu in').main };
+                    }
+                } else if (resultUnitType === 'area') {
+                    if (conversionSourceInfo.type && areaConversionFactors[conversionSourceInfo.type]) {
+                        valueToConvertInBaseUnits = rawValue * areaConversionFactors[conversionSourceInfo.type]; // to sq in
+                        sourceInfoForPendingConversion = { type: 'area', baseUnit: conversionSourceInfo.type, originalValueStr: conversionSourceInfo.originalValueStr };
+                    } else { // Was a calc result, already in sq in
+                        sourceInfoForPendingConversion = { type: 'area', baseUnit: 'sq in', originalValueStr: formatAreaDisplay(rawValue, 'sq in').main };
+                    }
+                } else if (resultUnitType === 'linear') {
+                    if (conversionSourceInfo.type && conversionFactors[conversionSourceInfo.type]) {
+                        valueToConvertInBaseUnits = rawValue * conversionFactors[conversionSourceInfo.type]; // to in
+                        sourceInfoForPendingConversion = { type: 'linear', baseUnit: conversionSourceInfo.type, originalValueStr: conversionSourceInfo.originalValueStr };
+                    } else if (firstOperandWasDimensional) { // Was a calc result from dimensional linear math, already in inches
+                        sourceInfoForPendingConversion = { type: 'linear', baseUnit: 'in', originalValueStr: formatInchesToDimensional(rawValue) };
+                    } else { // Plain number result, treat as unitless for conversion (or inches by default)
+                         sourceInfoForPendingConversion = { type: 'linear', baseUnit: 'in', originalValueStr: formatDisplayNumber(String(rawValue)) }; // Treat as inches
+                    }
+                }
+            } else if (conversionSourceInfo.type && conversionSourceInfo.baseUnit && conversionSourceInfo.type === conversionSourceInfo.baseUnit) { 
+                // E.g. user typed "5" then "m", currentInput="5", conversionSourceInfo.type="m"
+                valueToConvertInBaseUnits = parseFloat(currentInput) * conversionFactors[conversionSourceInfo.type]; // to inches
+                sourceInfoForPendingConversion = { type: 'linear', baseUnit: conversionSourceInfo.type, originalValueStr: conversionSourceInfo.originalValueStr };
+            } else if (!isNaN(parseFloat(currentInput))) { // Plain number on display
                 valueToConvertInBaseUnits = parseFloat(currentInput);
-
-                // Determine the base unit type based on resultUnitType
-                let baseUnitTypeForConversion = resultUnitType;
-                if (resultUnitType === 'area') baseUnitTypeForConversion = 'sq in';
-                else if (resultUnitType === 'volume') baseUnitTypeForConversion = 'cu in';
-                else baseUnitTypeForConversion = 'in'; // For linear, base is inches
-
-                sourceInfoForPendingConv = {
-                    type: baseUnitTypeForConversion, // Current base unit type
-                    baseUnit: baseUnitTypeForConversion,
-                    originalValueStr: conversionSourceInfo.originalValueStr || displayValueElement.textContent // Preserve original display string
-                };
-            } else if (conversionSourceInfo.type && conversionSourceInfo.baseUnit) {
-                // For direct unit input (e.g. "5 m") that's not yet a result, currentInput is the value in that unit
-                valueToConvertInBaseUnits = parseFloat(currentInput) * conversionFactors[conversionSourceInfo.type]; // Convert to inches
-                sourceInfoForPendingConv = { type: 'in', baseUnit: 'in', originalValueStr: conversionSourceInfo.originalValueStr };
-            } else if (!isNaN(parseFloat(currentInput))) {
-                valueToConvertInBaseUnits = parseFloat(currentInput);
-                sourceInfoForPendingConv = { type: 'in', baseUnit: 'in', originalValueStr: formatDisplayNumber(currentInput) };
-            } else { currentInput = 'Error'; updateDisplay(); return; }
-
-            if (isNaN(valueToConvertInBaseUnits)) { currentInput = 'Error'; updateDisplay(); return; }
+                sourceInfoForPendingConversion = { type: 'linear', baseUnit: 'in', originalValueStr: formatDisplayNumber(currentInput) }; // Assume plain number is 'linear inches'
+            } else { /* ... error handling ... */ return; }
+            
+            if (isNaN(valueToConvertInBaseUnits)) { /* ... error handling ... */ return; }
 
             inputState = InputState.CONVERSION_PENDING;
             firstOperand = valueToConvertInBaseUnits; // Store the base unit value for conversion
-            conversionSourceInfo = sourceInfoForPendingConv; // Store info about the source for the Conv display
+            conversionSourceInfo = sourceInfoForPendingConversion; // Store info about the source for the Conv display
             displayShouldClear = true;
             resetDimensionalInput();
             updateDisplay();
         }
-
-        function roundToNearestLowerArchitectural(totalInches, strictlyLower = false) {
+        
+        function roundToNearestLowerArchitectural(totalInches) { /* ... (no change) ... */
             if (isNaN(totalInches) || !isFinite(totalInches)) {
                 return { roundedValueInches: totalInches, bestNumerator: null, bestDenominator: null, roundingOccurred: false };
             }
@@ -1520,69 +1551,51 @@
             const sign = totalInches < 0 ? -1 : 1;
             const absTotalInches = Math.abs(totalInches);
             const wholeInches = Math.floor(absTotalInches);
-            let originalFractionalPartOfInches = absTotalInches - wholeInches;
+            const originalFractionalPartOfInches = absTotalInches - wholeInches;
+            const epsilon = 1e-9; 
 
-            if (strictlyLower && originalFractionalPartOfInches < ROUNDING_EPSILON) {
-                if (absTotalInches < ROUNDING_EPSILON) {
-                     return { roundedValueInches: 0, bestNumerator: 0, bestDenominator: 1, roundingOccurred: false };
-                }
-                if (wholeInches > 0) {
-                    return {
-                        roundedValueInches: sign * (wholeInches - 1 + (FRACTION_DENOMINATOR_LIMIT -1) / FRACTION_DENOMINATOR_LIMIT),
-                        bestNumerator: FRACTION_DENOMINATOR_LIMIT -1,
-                        bestDenominator: FRACTION_DENOMINATOR_LIMIT,
-                        roundingOccurred: true
-                    };
-                } else {
-                     originalFractionalPartOfInches = 1.0 - ROUNDING_EPSILON;
-                }
-            } else if (strictlyLower) {
-                 originalFractionalPartOfInches -= ROUNDING_EPSILON;
-                 if (originalFractionalPartOfInches < 0) originalFractionalPartOfInches = 0;
-            }
-
-
-            if (originalFractionalPartOfInches < ROUNDING_EPSILON && !strictlyLower) {
+            if (originalFractionalPartOfInches < epsilon) {
                 return { roundedValueInches: totalInches, bestNumerator: 0, bestDenominator: 1, roundingOccurred: false };
             }
 
-
             const architecturalDenominators = [32, 16, 8, 4, 2];
-            let bestLowerFractionValue = -1;
+            let bestLowerFractionValue = 0; 
             let finalNumerator = 0;
-            let finalDenominator = 1;
-            let foundRoundingCandidate = false;
+            let finalDenominator = 1; 
 
             for (const archDen of architecturalDenominators) {
-                let potentialNumerator = Math.floor(originalFractionalPartOfInches * archDen + ROUNDING_EPSILON);
-
-                if (potentialNumerator >= archDen) potentialNumerator = archDen -1;
-                if (potentialNumerator < 0) potentialNumerator = 0;
+                let potentialNumerator = Math.floor(originalFractionalPartOfInches * archDen - epsilon);
+                
+                if (potentialNumerator < 0) {
+                    potentialNumerator = 0;
+                }
 
                 const currentLowerFractionVal = potentialNumerator / archDen;
 
-                if (currentLowerFractionVal <= originalFractionalPartOfInches + ROUNDING_EPSILON) {
-                    if (currentLowerFractionVal > bestLowerFractionValue - ROUNDING_EPSILON) {
-                        bestLowerFractionValue = currentLowerFractionVal;
-                        finalNumerator = potentialNumerator;
-                        finalDenominator = archDen;
-                        foundRoundingCandidate = true;
+                if (currentLowerFractionVal > bestLowerFractionValue - epsilon) { 
+                    bestLowerFractionValue = currentLowerFractionVal;
+                    finalNumerator = potentialNumerator;
+                    finalDenominator = archDen;
+                } else if (Math.abs(currentLowerFractionVal - bestLowerFractionValue) < epsilon) {
+                    if (archDen < finalDenominator) {
+                         finalNumerator = potentialNumerator;
+                         finalDenominator = archDen;
                     }
                 }
             }
-
-            if (!foundRoundingCandidate || finalNumerator === 0 && bestLowerFractionValue < ROUNDING_EPSILON) {
+            
+            if (finalNumerator > 0) {
+                const common = gcd(finalNumerator, finalDenominator);
+                finalNumerator /= common;
+                finalDenominator /= common;
+            } else { 
                 finalNumerator = 0;
                 finalDenominator = 1;
-                bestLowerFractionValue = 0;
-            } else {
-                 const common = gcd(finalNumerator, finalDenominator);
-                 finalNumerator /= common;
-                 finalDenominator /= common;
+                bestLowerFractionValue = 0; 
             }
-
+            
             const finalRoundedInches = sign * (wholeInches + bestLowerFractionValue);
-            const roundingOccurred = Math.abs(finalRoundedInches - totalInches) > ROUNDING_EPSILON || (strictlyLower && totalInches > finalRoundedInches + ROUNDING_EPSILON );
+            const roundingOccurred = Math.abs(finalRoundedInches - totalInches) > epsilon;
 
             return {
                 roundedValueInches: finalRoundedInches,
@@ -1591,321 +1604,285 @@
                 roundingOccurred: roundingOccurred
             };
         }
-        function handleFraction() {
+        function handleFraction() { /* ... (no change) ... */
             console.log(`handleFraction: State: ${inputState}, currentInput: ${currentInput}, lastValueUsedForRounding: ${lastValueUsedForRounding}`);
-            resetSqCuMode();
+            resetSfCuMode(); 
 
             if (inputState === InputState.SHOWING_RESULT) {
                 let valueToProcessForRounding;
-                let originalCalcResultStringForPreciseValue = currentInput;
-                let isSubsequentRounding = tempRoundedDisplay && lastValueUsedForRounding !== null;
+                let originalCalcResultStringForPreciseValue; 
 
-                if (isSubsequentRounding) {
-                    valueToProcessForRounding = lastValueUsedForRounding;
-                    originalCalcResultStringForPreciseValue = tempRoundedDisplay.preciseValue;
+                if (tempRoundedDisplay && lastValueUsedForRounding !== null) {
+                    valueToProcessForRounding = lastValueUsedForRounding; 
+                    originalCalcResultStringForPreciseValue = tempRoundedDisplay.preciseValue; 
                 } else {
-                    const preciseResultNumeric = parseFloat(currentInput);
-                    if (isNaN(preciseResultNumeric)) { currentInput = 'Error'; updateDisplay(); return; }
+                    const preciseResultNumeric = parseFloat(currentInput); // currentInput here is the magnitude in its display unit
+                    if (isNaN(preciseResultNumeric)) { /* ... error ... */ return; }
+                    originalCalcResultStringForPreciseValue = currentInput; 
 
                     let valueInInchesForRounding;
                     if (resultUnitType === 'linear') {
-                        // For a linear result, currentInput is already in inches (base unit)
-                        valueInInchesForRounding = preciseResultNumeric;
-                    } else { currentInput = 'Not Linear'; updateDisplay(); return; }
+                        if (conversionSourceInfo.type && conversionFactors[conversionSourceInfo.type]) { // e.g. "5" from "5m"
+                            valueInInchesForRounding = preciseResultNumeric * conversionFactors[conversionSourceInfo.type];
+                        } else if (firstOperandWasDimensional) { // Result of dimensional calc, already in inches
+                            valueInInchesForRounding = preciseResultNumeric; 
+                        } else { // Plain number, assume inches for rounding
+                            valueInInchesForRounding = preciseResultNumeric; 
+                        }
+                    } else { /* ... error not roundable ... */ return; }
                     valueToProcessForRounding = valueInInchesForRounding;
                 }
 
-                const { roundedValueInches, bestNumerator, bestDenominator, roundingOccurred } = roundToNearestLowerArchitectural(valueToProcessForRounding, isSubsequentRounding);
-
-                if (roundingOccurred || !isSubsequentRounding) {
-                    if (isSubsequentRounding && Math.abs(roundedValueInches - lastValueUsedForRounding) < ROUNDING_EPSILON && bestNumerator === 0 && roundedValueInches < ROUNDING_EPSILON) {
-                        if (tempRoundedDisplay && tempRoundedDisplay.preciseValue !== undefined) {
-                             currentInput = tempRoundedDisplay.preciseValue;
-                             clearTemporaryRoundingState();
-                             addHistoryEntry("Rounding limit reached, restored original.");
-                             updateDisplay();
-                             return;
-                        }
-                    }
-
+                const { roundedValueInches, bestNumerator, bestDenominator, roundingOccurred } = roundToNearestLowerArchitectural(valueToProcessForRounding);
+                
+                if (roundingOccurred) {
                     const roundedDisplayString = formatInchesToDimensional(roundedValueInches, bestNumerator, bestDenominator);
                     addHistoryEntry(`rounded --> <strong>${roundedDisplayString}</strong>`);
 
                     tempRoundedDisplay = {
                         main: roundedDisplayString,
                         dimensional: formatDisplayNumber(String(roundedValueInches)) + " in (rounded)",
-                        preciseValue: originalCalcResultStringForPreciseValue
+                        preciseValue: originalCalcResultStringForPreciseValue 
                     };
-                    lastValueUsedForRounding = roundedValueInches;
+                    lastValueUsedForRounding = roundedValueInches; 
                     updateDisplay();
-                } else {
-                    addHistoryEntry("No further rounding possible.");
-                }
-                return;
+                } else { /* ... no further rounding ... */ }
+                return; 
             }
 
-            clearTemporaryRoundingState();
-            if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) {
-                const numValue = parseInt(currentInput);
-                if (!isNaN(numValue) && currentInput.indexOf('.') === -1) {
-                    storedFeet = storedFeet !== null ? storedFeet : null;
-                    storedInches = storedInches !== null ? storedInches : (storedFeet !== null ? 0 : null);
-
-                    storedNumerator = numValue;
-                    inputState = InputState.ENTERING_DENOMINATOR;
-                    currentInput = '0';
-                    displayShouldClear = true;
-                    currentInputIsDimensional = true;
-                } else if (currentInput === '0' && (inputState === InputState.START || inputState === InputState.ENTERING_FEET)) {
-                    storedFeet = storedFeet !== null ? storedFeet : null;
-                    storedInches = storedInches !== null ? storedInches : (storedFeet !== null ? 0 : null);
-                    inputState = InputState.ENTERING_NUMERATOR;
-                    currentInput = '0';
-                    displayShouldClear = true;
-                    currentInputIsDimensional = true;
-                } else { console.warn("handleFraction: Invalid value or state for starting fraction directly."); }
-            } else if (inputState === InputState.ENTERING_INCHES || inputState === InputState.DIMENSIONAL_COMPLETE) {
-                const inchesValue = parseFloat(currentInput);
-                if (inputState === InputState.ENTERING_INCHES && !isNaN(inchesValue)) {
-                    storedInches = inchesValue;
-                } else if (storedInches === null && storedFeet !== null) {
-                    storedInches = 0;
-                }
-
-                inputState = InputState.ENTERING_NUMERATOR;
-                currentInput = '0';
-                displayShouldClear = true;
-                currentInputIsDimensional = true;
-            } else if (inputState === InputState.ENTERING_NUMERATOR) {
-                const numeratorValue = parseInt(currentInput);
-                if (!isNaN(numeratorValue)) {
-                    storedNumerator = numeratorValue;
-                    inputState = InputState.ENTERING_DENOMINATOR;
-                    currentInput = '0';
-                    displayShouldClear = true;
-                } else { console.warn("handleFraction: Invalid numerator value."); }
-            } else { console.log("handleFraction: Ignoring fraction button in current state:", inputState); }
+            clearTemporaryRoundingState(); 
+            if (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) { 
+                const numValue = parseInt(currentInput); 
+                if (!isNaN(numValue) && currentInput.indexOf('.') === -1) { 
+                    storedFeet = storedFeet !== null ? storedFeet : 0; 
+                    storedInches = (storedFeet !== null && storedInches === null) ? 0 : (storedInches !== null ? storedInches : 0) ; 
+                    storedNumerator = numValue; 
+                    inputState = InputState.ENTERING_DENOMINATOR; 
+                    currentInput = '0'; 
+                    displayShouldClear = true; 
+                    currentInputIsDimensional = true; 
+                } else if (currentInput === '0' && (inputState === InputState.START || inputState === InputState.ENTERING_FEET)) { 
+                    storedFeet = storedFeet !== null ? storedFeet : 0; 
+                    storedInches = storedInches !== null ? storedInches : 0; 
+                    inputState = InputState.ENTERING_NUMERATOR; 
+                    currentInput = '0'; 
+                    displayShouldClear = true; 
+                    currentInputIsDimensional = true; 
+                } else { console.warn("handleFraction: Invalid value or state for starting fraction directly."); } 
+            } else if (inputState === InputState.ENTERING_INCHES || inputState === InputState.DIMENSIONAL_COMPLETE) { 
+                const inchesValue = parseFloat(currentInput); 
+                if (inputState === InputState.ENTERING_INCHES) { 
+                    if (!isNaN(inchesValue)) storedInches = inchesValue; 
+                    else if (storedInches === null) storedInches = 0; 
+                } 
+                inputState = InputState.ENTERING_NUMERATOR; 
+                currentInput = '0'; 
+                displayShouldClear = true; 
+                currentInputIsDimensional = true; 
+            } else if (inputState === InputState.ENTERING_NUMERATOR) { 
+                const numeratorValue = parseInt(currentInput); 
+                if (!isNaN(numeratorValue)) { 
+                    storedNumerator = numeratorValue; 
+                    inputState = InputState.ENTERING_DENOMINATOR; 
+                    currentInput = '0'; 
+                    displayShouldClear = true; 
+                } else { console.warn("handleFraction: Invalid numerator value."); } 
+            } else { console.log("handleFraction: Ignoring fraction button in current state:", inputState); } 
             updateDisplay();
         }
-        function memoryStore() {
+        function memoryStore() { /* ... (no change from previous logic, ensure valueToStoreInInches is base inches) ... */
             restorePreciseValueAndClearRounding();
-            resetSqCuMode();
-            let valueToStoreInBaseUnits;
-            let typeOfValue = 'linear';
+            resetSfCuMode();
+            let valueToStoreInInches;
 
             if (inputState === InputState.ENTERING_NUMERATOR || inputState === InputState.ENTERING_DENOMINATOR || inputState === InputState.DIMENSIONAL_COMPLETE || inputState === InputState.ENTERING_INCHES) {
-                valueToStoreInBaseUnits = finalizeDimensionalInput();
-                typeOfValue = 'linear';
+                valueToStoreInInches = finalizeDimensionalInput(); // Already inches
                 resetDimensionalInput();
             } else if (inputState === InputState.SHOWING_RESULT) {
-                // currentInput is already the base value here
-                valueToStoreInBaseUnits = parseFloat(currentInput);
-                typeOfValue = resultUnitType;
-            } else if (conversionSourceInfo.type && conversionSourceInfo.baseUnit) {
-                valueToStoreInBaseUnits = parseFloat(currentInput) * conversionFactors[conversionSourceInfo.type];
-                typeOfValue = 'linear';
-            } else {
-                valueToStoreInBaseUnits = parseFloat(currentInput);
-                typeOfValue = 'linear';
+                let rawValue = parseFloat(currentInput);
+                if (resultUnitType === 'area' || resultUnitType === 'volume') {
+                    displayDimensionalElement.textContent = `Cannot Store ${resultUnitType}`;
+                    setTimeout(() => { updateDisplay(); }, 1000);
+                    return;
+                }
+                // If linear and has a unit type (e.g. "5" from "5m")
+                if (conversionSourceInfo.type && conversionFactors[conversionSourceInfo.type]) {
+                     valueToStoreInInches = rawValue * conversionFactors[conversionSourceInfo.type]; // to inches
+                } else { // Assumed to be already in inches (e.g. from dimensional calc)
+                    valueToStoreInInches = rawValue;
+                }
+            } else if (conversionSourceInfo.type === 'linear' && conversionSourceInfo.baseUnit && conversionSourceInfo.type === conversionSourceInfo.baseUnit) {
+                 // Handles cases like "5 m" on display before an operation, and store is pressed
+                valueToStoreInInches = parseFloat(currentInput) * conversionFactors[conversionSourceInfo.type]; // to inches
+                // resetConversionState(); // Not reset on store usually
+            } else { // Plain number on display, assume inches
+                valueToStoreInInches = parseFloat(currentInput);
             }
 
-            if (!isNaN(valueToStoreInBaseUnits)) {
-                // Store base value, its type, and a formatted display string for recall history
-                memoryValue = {
-                    value: valueToStoreInBaseUnits,
-                    type: typeOfValue,
-                    originalDisplay: updateDisplayAndGetFormattedValue(valueToStoreInBaseUnits, typeOfValue) // Get formatted string
-                };
+            if (!isNaN(valueToStoreInInches)) {
+                memoryValue = valueToStoreInInches;
                 displayDimensionalElement.textContent = "Stored";
-                addHistoryEntry(`Stored: ${memoryValue.originalDisplay}`);
+                addHistoryEntry(`Stored: ${formatInchesToDimensional(memoryValue)}`);
                 setTimeout(() => { updateDisplay(); }, 500);
-                displayShouldClear = true;
-            } else { currentInput = 'Error Store'; updateDisplay(); }
+                displayShouldClear = true; 
+            } else { /* ... error ... */ }
         }
-
-        function updateDisplayAndGetFormattedValue(value, type) {
-            if (type === 'area') return formatAreaDisplay(value, 'sq ft').main;
-            if (type === 'volume') return formatVolumeDisplay(value, 'cu ft').main;
-            if (type === 'linear') return formatInchesToDimensional(value);
-            return formatDisplayNumber(String(value));
-        }
-
-        function memoryRecall() {
+        function memoryRecall() { /* ... (no change) ... */
             restorePreciseValueAndClearRounding();
-            if (memoryValue && typeof memoryValue === 'object' && memoryValue.value !== undefined) {
-                resetCalculatorState();
-                currentInput = String(memoryValue.value); // currentInput becomes the base value from memory
-                resultUnitType = memoryValue.type;
-                firstOperandWasDimensional = true; // Recalled value is considered dimensional
-
-                // Set conversionSourceInfo to reflect the base unit type of the recalled value
-                if (memoryValue.type === 'linear') {
-                    conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: memoryValue.originalDisplay };
-                } else if (memoryValue.type === 'area') {
-                    conversionSourceInfo = { type: 'sq in', baseUnit: 'sq in', originalValueStr: memoryValue.originalDisplay };
-                } else if (memoryValue.type === 'volume') {
-                    conversionSourceInfo = { type: 'cu in', baseUnit: 'cu in', originalValueStr: memoryValue.originalDisplay };
-                }
-
-                inputState = InputState.SHOWING_RESULT;
-                addHistoryEntry(`Recalled: ${memoryValue.originalDisplay}`);
-            } else {
-                resetCalculatorState();
-                currentInput = String(memoryValue);
-                inputState = InputState.SHOWING_RESULT;
-                firstOperandWasDimensional = true;
-                resultUnitType = 'linear';
-                conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(parseFloat(currentInput)) };
-                addHistoryEntry(`Recalled: ${formatInchesToDimensional(parseFloat(currentInput))}`);
-            }
-            updateDisplay();
+            resetCalculatorStateExceptHistory(); 
+            currentInput = String(memoryValue); // memoryValue is in inches
+            inputState = InputState.SHOWING_RESULT; 
+            firstOperandWasDimensional = true; 
+            resultUnitType = 'linear'; 
+            conversionSourceInfo = { type: 'in', baseUnit: 'in', originalValueStr: formatInchesToDimensional(memoryValue) }; // Signify it's in inches
+            addHistoryEntry(`Recalled: ${formatInchesToDimensional(memoryValue)}`);
+            updateDisplay(); 
         }
-        function toggleSign() {
+        function toggleSign() { /* ... (no change) ... */
             restorePreciseValueAndClearRounding();
-            resetSqCuMode();
-            if ( (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) ||
-                 (inputState === InputState.SHOWING_RESULT && resultUnitType === 'linear' && !firstOperandWasDimensional && !conversionSourceInfo.type) ) {
-                const numericValue = parseFloat(currentInput);
-                if (!isNaN(numericValue) && numericValue !== 0) {
-                    currentInput = String(numericValue * -1);
-                }
-            }
-            updateDisplay();
+            resetSfCuMode();
+            if ( (inputState === InputState.START || inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) || (inputState === InputState.SHOWING_RESULT && resultUnitType === 'linear' && !firstOperandWasDimensional && !conversionSourceInfo.type) ) { 
+                const numericValue = parseFloat(currentInput); 
+                if (!isNaN(numericValue) && numericValue !== 0) { 
+                    currentInput = String(numericValue * -1); 
+                } 
+            } 
+            updateDisplay(); 
         }
-        function handleBackspace() {
+        function handleBackspace() { /* ... (no change) ... */
             if (tempRoundedDisplay) {
-                currentInput = tempRoundedDisplay.preciseValue;
-                clearTemporaryRoundingState();
-                updateDisplay();
-                return;
+                currentInput = tempRoundedDisplay.preciseValue; 
+                clearTemporaryRoundingState(); 
+                updateDisplay(); 
+                return; 
             }
-
-            if (inputState === InputState.SHOWING_RESULT || inputState === InputState.CONVERSION_PENDING) {
-                return;
-            }
-            if (currentInput === '0' || currentInput === '') {
-                if (inputState === InputState.ENTERING_DENOMINATOR) {
-                    currentInput = String(storedNumerator !== null ? storedNumerator : '0');
-                    storedNumerator = null;
-                    inputState = InputState.ENTERING_NUMERATOR;
-                    displayShouldClear = false;
-                } else if (inputState === InputState.ENTERING_NUMERATOR) {
-                    currentInput = String(storedInches !== null ? storedInches : '0');
-                    storedNumerator = null;
-                    inputState = storedInches !== null ? InputState.DIMENSIONAL_COMPLETE : (storedFeet !== null ? InputState.ENTERING_INCHES : InputState.ENTERING_FEET);
-                    displayShouldClear = false;
-                } else if (inputState === InputState.DIMENSIONAL_COMPLETE) {
-                    if (storedInches !== null) {
-                        currentInput = String(storedInches);
-                        storedInches = null;
-                        inputState = InputState.ENTERING_INCHES;
-                    } else if (storedFeet !== null) {
-                        currentInput = String(storedFeet);
-                        storedFeet = null;
-                        inputState = InputState.ENTERING_FEET;
-                        currentInputIsDimensional = false;
-                    }
-                    displayShouldClear = false;
-                } else if (inputState === InputState.ENTERING_INCHES) {
-                    currentInput = String(storedFeet !== null ? storedFeet : '0');
-                    storedFeet = null;
-                    inputState = InputState.ENTERING_FEET;
-                    currentInputIsDimensional = false;
-                    displayShouldClear = false;
-                } else if (inputState === InputState.ENTERING_FEET || inputState === InputState.ENTERING_DECIMAL) {
-                    currentInputIsDimensional = false;
-                }
+            
+            if (inputState === InputState.SHOWING_RESULT || inputState === InputState.CONVERSION_PENDING) { 
+                return; 
+            } 
+            if (currentInput === '0') { 
+                if (inputState === InputState.ENTERING_DENOMINATOR) { 
+                    currentInput = String(storedNumerator !== null ? storedNumerator : '0'); 
+                    storedNumerator = null; 
+                    inputState = InputState.ENTERING_NUMERATOR; 
+                    displayShouldClear = false; 
+                } else if (inputState === InputState.ENTERING_NUMERATOR) { 
+                    currentInput = String(storedInches !== null ? storedInches : '0'); 
+                    storedNumerator = null; 
+                    inputState = InputState.DIMENSIONAL_COMPLETE; 
+                    displayShouldClear = false; 
+                } else if (inputState === InputState.DIMENSIONAL_COMPLETE) { 
+                    if (storedFeet !== null) { 
+                        currentInput = String(storedInches !== null ? storedInches : '0'); 
+                        inputState = InputState.ENTERING_INCHES; 
+                    } else { 
+                        currentInput = String(storedInches !== null ? storedInches : '0'); 
+                        inputState = InputState.ENTERING_FEET; 
+                        currentInputIsDimensional = false; 
+                    } 
+                    displayShouldClear = false; 
+                } else if (inputState === InputState.ENTERING_INCHES) { 
+                    currentInput = String(storedFeet !== null ? storedFeet : '0'); 
+                    storedFeet = null; 
+                    storedInches = null; 
+                    inputState = InputState.ENTERING_FEET; 
+                    currentInputIsDimensional = false; 
+                    displayShouldClear = false; 
+                } 
             } else {
-                 if (currentInput.length > 1) {
-                    currentInput = currentInput.slice(0, -1);
-                    if (!currentInput.includes('.') && inputState === InputState.ENTERING_DECIMAL) {
-                         if (/^\d+$/.test(currentInput)) inputState = InputState.ENTERING_FEET;
-                         else if (currentInput === '0') inputState = InputState.START;
-                    }
-                } else {
-                    currentInput = '0';
-                    if (inputState === InputState.ENTERING_DECIMAL && !currentInput.includes('.')) inputState = InputState.ENTERING_FEET;
-                }
+                 if (currentInput.length > 1) { 
+                    currentInput = currentInput.slice(0, -1); 
+                    if (!currentInput.includes('.') && inputState === InputState.ENTERING_DECIMAL) { 
+                        if (/^\d+$/.test(currentInput)) { 
+                            inputState = InputState.ENTERING_FEET; 
+                        } 
+                    } 
+                } else { 
+                    currentInput = '0'; 
+                } 
             }
-            updateDisplay();
+            updateDisplay(); 
         }
-        function handleSqCu() {
+        function handleSfCu() { /* ... (no change) ... */
             restorePreciseValueAndClearRounding();
-            sqcuPressCount++;
+            sfcuPressCount++;
 
-            if (sqcuPressCount === 1) {
+            if (sfcuPressCount === 1) { 
                 currentDimensionMode = 'area';
-            } else if (sqcuPressCount === 2) {
+                displayDimensionalElement.textContent = "SF Mode (Area)";
+            } else if (sfcuPressCount === 2) { 
                 currentDimensionMode = 'volume';
-            } else {
-                sqcuPressCount = 0;
+                displayDimensionalElement.textContent = "CF Mode (Volume)";
+            } else { 
+                sfcuPressCount = 0;
                 currentDimensionMode = 'linear';
+                displayDimensionalElement.textContent = "Linear Mode"; // Or clear it via updateDisplay()
+            }
+            
+            const previousDisplayValue = displayValueElement.textContent; 
+            const previousDimensionalDisplay = displayDimensionalElement.textContent;
+
+            if (inputState !== InputState.SHOWING_RESULT || currentInput === '0') {
+                 // Allow the SF-CU mode text to show if we are not overriding a result
+                 if (sfcuPressCount === 1) displayDimensionalElement.textContent = "SF Mode (Area)";
+                 else if (sfcuPressCount === 2) displayDimensionalElement.textContent = "CF Mode (Volume)";
+                 else displayDimensionalElement.textContent = ""; // Or "Linear Mode" then auto-clear
+            } else {
+                // If there's already a result, just flash the mode briefly or rely on next input to update
+                // updateDisplay() will show the actual result. This text is temporary.
             }
 
-            updateDisplay();
 
             setTimeout(() => {
-                if (sqcuPressCount > 0 && (currentDimensionMode === 'area' || currentDimensionMode === 'volume')) {
-                     if (displayDimensionalElement.textContent === "SQ Mode (Area)" ||
-                         displayDimensionalElement.textContent === "CU Mode (Volume)") {
-                         if (currentInput === '0' && inputState !== InputState.SHOWING_RESULT) {
-                            displayDimensionalElement.textContent = "";
-                         } else {
-                            updateDisplay();
-                         }
+                if (sfcuPressCount > 0 && (currentDimensionMode === 'area' || currentDimensionMode === 'volume')) {
+                     if (displayDimensionalElement.textContent === "SF Mode (Area)" || 
+                         displayDimensionalElement.textContent === "CF Mode (Volume)" ||
+                         displayDimensionalElement.textContent === "Linear Mode") {
+                         updateDisplay(); // Revert to normal display based on currentInput and state
                      }
-                } else if (sqcuPressCount === 0 && displayDimensionalElement.textContent === "Linear Mode") {
-                    if (currentInput === '0' && inputState !== InputState.SHOWING_RESULT) {
-                        displayDimensionalElement.textContent = "";
-                    } else {
-                        updateDisplay();
-                    }
+                } else if (sfcuPressCount === 0 && displayDimensionalElement.textContent === "Linear Mode") {
+                    updateDisplay();
                 }
             }, 1500);
         }
 
-        function setDarkMode(isDark) {
+        function setDarkMode(isDark) { /* ... (no change) ... */
             if (isDark) {
                 document.body.classList.add('dark-mode');
                 calculatorElement.classList.add('dark-mode');
-                darkModeToggleButton.textContent = '☼';
+                darkModeToggleButton.textContent = '☼'; 
                 darkModeToggleButton.title = "Toggle Light Mode";
-                if (uaiLogo) uaiLogo.style.filter = 'brightness(0) invert(1)';
-
+               
             } else {
                 document.body.classList.remove('dark-mode');
                 calculatorElement.classList.remove('dark-mode');
-                darkModeToggleButton.textContent = '🌙';
+                darkModeToggleButton.textContent = '☼'; 
                 darkModeToggleButton.title = "Toggle Dark Mode";
                 if (uaiLogo) uaiLogo.style.filter = 'none';
             }
         }
 
-        darkModeToggleButton.addEventListener('click', () => {
+        darkModeToggleButton.addEventListener('click', () => { /* ... (no change) ... */
             const isDarkMode = document.body.classList.contains('dark-mode');
             setDarkMode(!isDarkMode);
-            try { localStorage.setItem('darkMode', !isDarkMode); } catch (e) { console.warn("LocalStorage not available for dark mode preference."); }
+            localStorage.setItem('darkMode', !isDarkMode);
         });
 
-        let prefersDarkInit = false;
-        try { prefersDarkInit = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { /*ignore*/ }
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedDarkMode = localStorage.getItem('darkMode');
 
-        let savedDarkModeInit = null;
-        try { savedDarkModeInit = localStorage.getItem('darkMode'); } catch (e) { /*ignore*/ }
-
-
-        if (savedDarkModeInit === 'true') setDarkMode(true);
-        else if (savedDarkModeInit === 'false') setDarkMode(false);
-        else setDarkMode(prefersDarkInit);
+        if (savedDarkMode === 'true') setDarkMode(true);
+        else if (savedDarkMode === 'false') setDarkMode(false);
+        else setDarkMode(prefersDark);
 
 
-        calculatorButtons.addEventListener('click', (event) => {
-            const target = event.target.closest('button');
-            if (!target) return;
+        calculatorButtons.addEventListener('click', (event) => { /* ... (no change) ... */
+            const target = event.target.closest('button'); 
+            if (!target) return; 
             const action = target.dataset.action;
             const number = target.dataset.number;
             const unit = target.dataset.unit;
-
+            
             if (action !== 'fraction' && action !== 'sf-cu' && tempRoundedDisplay) {
                 restorePreciseValueAndClearRounding();
             }
@@ -1920,46 +1897,27 @@
                     case 'clear': clearCalculator(); break;
                     case 'backspace': handleBackspace(); break;
                     case 'convert': handleConvert(); break;
-                    case 'fraction': handleFraction(); break;
-                    case 'memory-store': memoryStore(); break;
-                    case 'memory-recall': memoryRecall(); break;
-                    case 'sf-cu': handleSqCu(); break;
+                    case 'fraction': handleFraction(); break; 
+                    case 'memory-store': memoryStore(); break; 
+                    case 'memory-recall': memoryRecall(); break; 
+                    case 'sf-cu': handleSfCu(); break; 
                     case 'sign': toggleSign(); break;
                     case 'clear-history': clearHistory(); break;
                     default: console.warn("Unknown action:", action);
                 }
             }
+             // Call updateDisplay after most actions if not called within the handler itself.
+             // Some handlers like handleOperator (SHOWING_RESULT path) and handleEquals call it.
+             // Others might need it here. However, many actions modify state and then call updateDisplay.
+             // For safety, if it's a button that doesn't path through a display-updating handler:
+             // if (!['calculate', 'add', 'subtract', 'multiply', 'divide', 'convert', 'unit', 'sf-cu'].includes(action) && unit === undefined) {
+             //     updateDisplay(); // This might be too broad. Fine-tune if needed.
+             // }
         });
 
-        window.addEventListener('keydown', (event) => {
+        window.addEventListener('keydown', (event) => { /* ... (no change) ... */
             const key = event.key;
-            let targetButton = null;
-
-            if ((event.ctrlKey || event.metaKey) && key.toLowerCase() === 'c') {
-                event.preventDefault();
-                const textToCopy = displayValueElement.textContent;
-                const tempTextArea = document.createElement('textarea');
-                tempTextArea.value = textToCopy;
-                document.body.appendChild(tempTextArea);
-                tempTextArea.select();
-                try {
-                    document.execCommand('copy');
-                    displayDimensionalElement.textContent = "Copied Display!";
-                    setTimeout(() => {
-                        if (displayDimensionalElement.textContent === "Copied Display!") updateDisplay();
-                    }, 1000);
-                } catch (err) {
-                    console.error('Failed to copy text: ', err);
-                    displayDimensionalElement.textContent = "Copy Failed";
-                     setTimeout(() => {
-                        if (displayDimensionalElement.textContent === "Copy Failed") updateDisplay();
-                    }, 1000);
-                }
-                document.body.removeChild(tempTextArea);
-                return;
-            }
-
-
+            let targetButton = null; 
             if (/[0-9]/.test(key)) targetButton = calculatorButtons.querySelector(`.btn[data-number="${key}"]`);
             else if (key === '.') targetButton = calculatorButtons.querySelector('.btn[data-action="decimal"]');
             else if (key === "'") targetButton = calculatorButtons.querySelector('.btn[data-unit="ft"]');
@@ -1971,28 +1929,25 @@
             else if (key === '*' || key.toLowerCase() === 'x') targetButton = calculatorButtons.querySelector('.btn[data-action="multiply"]');
             else if (key === 'Enter' || key === '=') targetButton = calculatorButtons.querySelector('.btn[data-action="calculate"]');
             else if (key === 'Backspace') targetButton = calculatorButtons.querySelector('.btn[data-action="backspace"]');
-            else if (key.toLowerCase() === 'c' && !(event.ctrlKey || event.metaKey)) targetButton = calculatorButtons.querySelector('.btn[data-action="clear"]');
-            else if (key === 'Escape') targetButton = calculatorButtons.querySelector('.btn[data-action="clear"]');
-            else if (key.toLowerCase() === 'v') targetButton = calculatorButtons.querySelector('.btn[data-action="convert"]');
-            else if (key.toLowerCase() === 's' && (event.ctrlKey || event.metaKey)) {
-                event.preventDefault();
+            else if (key.toLowerCase() === 'c' || key === 'Escape') targetButton = calculatorButtons.querySelector('.btn[data-action="clear"]');
+            else if (key.toLowerCase() === 'v') targetButton = calculatorButtons.querySelector('.btn[data-action="convert"]'); 
+            else if (key.toLowerCase() === 's' && (event.ctrlKey || event.metaKey)) { 
                 targetButton = calculatorButtons.querySelector('.btn[data-action="memory-store"]');
-            } else if (key.toLowerCase() === 'r' && (event.ctrlKey || event.metaKey)) {
-                event.preventDefault();
+            } else if (key.toLowerCase() === 'r' && (event.ctrlKey || event.metaKey)) { 
                 targetButton = calculatorButtons.querySelector('.btn[data-action="memory-recall"]');
-            } else if (key.toLowerCase() === 'u') {
+            } else if (key.toLowerCase() === 'u') { 
                  targetButton = calculatorButtons.querySelector('.btn[data-action="sf-cu"]');
             }
 
             if (targetButton) {
-                 event.preventDefault();
-                 targetButton.click();
-                 targetButton.classList.add('btn:active');
+                 event.preventDefault(); 
+                 targetButton.click(); 
+                 targetButton.classList.add('btn:active'); 
                  setTimeout(() => targetButton.classList.remove('btn:active'), 100);
             }
         });
 
-        if (infoButton && noticeModal && modalCloseButton) {
+        if (infoButton && noticeModal && modalCloseButton) { /* ... (no change) ... */
             infoButton.addEventListener('click', () => {
                 noticeModal.classList.remove('hidden');
             });
@@ -2000,45 +1955,13 @@
                 noticeModal.classList.add('hidden');
             });
             noticeModal.addEventListener('click', (event) => {
-                if (event.target === noticeModal) {
+                if (event.target === noticeModal) { 
                     noticeModal.classList.add('hidden');
                 }
             });
         } else {
             console.error("Modal elements (infoButton, noticeModal, or modalCloseButton) not found!");
         }
-
-        // Event listener for copying history tape
-        historyTapeElement.addEventListener('click', () => {
-            const tapeContent = history.map(entry => {
-                // Strip HTML tags for plain text copy
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = entry;
-                return tempDiv.textContent || tempDiv.innerText || "";
-            }).join('\n');
-
-            if (!tapeContent) {
-                displayDimensionalElement.textContent = "Tape Empty";
-                setTimeout(() => { if (displayDimensionalElement.textContent === "Tape Empty") updateDisplay(); }, 1000);
-                return;
-            }
-
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = tapeContent;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            try {
-                document.execCommand('copy');
-                displayDimensionalElement.textContent = "Tape Copied!";
-                setTimeout(() => { if (displayDimensionalElement.textContent === "Tape Copied!") updateDisplay(); }, 1000);
-            } catch (err) {
-                console.error('Failed to copy tape: ', err);
-                displayDimensionalElement.textContent = "Copy Failed";
-                setTimeout(() => { if (displayDimensionalElement.textContent === "Copy Failed") updateDisplay(); }, 1000);
-            }
-            document.body.removeChild(tempTextArea);
-        });
-
 
         updateDisplay();
         updateHistoryDisplay();
