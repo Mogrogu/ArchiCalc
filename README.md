@@ -1,5 +1,5 @@
 # ArchiCalc
-# ArchiCalc v36
+# ArchiCalc v61
 
 > ⚠️ **Note:** This is a **beta release** currently in the testing stage. Functionality and accuracy are still being evaluated. Feedback and bug reports are welcome.
 > 
