@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#f97316" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
 
-    <title>ArchiCalc Beta 1.1</title>
+    <title>ArchiCalc Beta 1.3</title>
     <link rel="icon" href=" CalcIcon.png" onerror="this.href='https://placehold.co/16x16/f97316/ffffff?text=AC'">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f97316'%3E%3Cpath d='M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z'/%3E%3Cpath d='M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z'/%3E%3C/svg%3E" type="image/svg+xml">
     
@@ -177,6 +177,7 @@
             padding: 1rem 1.25rem 1.5rem; color: var(--display-text);
             display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;
             flex-shrink: 0; transition: color 0.3s ease;
+            width: 100%;
         }
 
         .display-dimensional {
@@ -188,8 +189,14 @@
 
         .display-main {
             font-size: 3.5rem; font-weight: 300; tracking: tight;
-            width: 100%; text-align: right; white-space: nowrap; overflow: hidden;
+            width: 100%; text-align: right; white-space: nowrap;
+            overflow-x: auto; overflow-y: hidden;
             line-height: 1.1; min-height: 1.1em;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .display-main::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
         }
 
         .buttons {
@@ -353,6 +360,7 @@
                 <li><strong>Measurement Modes:</strong> Compute linear, area (sq. ft/in), and volume (cu. ft/in) values.</li>
                 <li><strong>SQ-CU Mode:</strong> Toggle input interpretation for direct area (SQ) or volume (CU) entry with subsequent unit selection.</li>
                 <li><strong>Metric Conversion:</strong> Convert between imperial and metric (meters, centimeters, millimeters).</li>
+                <li><strong>Decimal Conversion:</strong> Press <code>Conv</code> then <code>Feet</code> or <code>Inch</code> to toggle decimal feet or decimal inches.</li>
                 <li><strong>Memory Functions:</strong> Store and Recall a single numerical value (overwrites previous).</li>
                 <li><strong>Calculation Tape:</strong> Scrollable history tape shows recent calculations. Click tape to copy.</li>
                 <li><strong>Keyboard shortcuts:</strong> Keyboard shortcuts are shown next to the functions in parentheses.</li>
@@ -438,10 +446,10 @@
         const roundDenominators = [32, 16, 8, 4, 2, 1]; 
         
         // Conversion Constants
-        const conversionFactors = { 'in': 1, 'ft': 12, 'yd': 36, 'm': 39.3701, 'cm': 0.393701, 'mm': 0.0393701 };
-        const areaFactors = { 'in': 1, 'ft': 144, 'yd': 1296, 'm': 1550.0031, 'cm': 0.15500031, 'mm': 0.0015500031 };
-        const volFactors = { 'in': 1, 'ft': 1728, 'yd': 46656, 'm': 61023.744, 'cm': 0.061023744, 'mm': 0.000061023744 };
-        const unitLabels = { 'in': 'in', 'ft': 'ft', 'yd': 'yd', 'm': 'm', 'cm': 'cm', 'mm': 'mm' };
+        const conversionFactors = { 'in': 1, 'dec-in': 1, 'ft': 12, 'dec-ft': 12, 'yd': 36, 'm': 39.3701, 'cm': 0.393701, 'mm': 0.0393701 };
+        const areaFactors = { 'in': 1, 'dec-in': 1, 'ft': 144, 'dec-ft': 144, 'yd': 1296, 'm': 1550.0031, 'cm': 0.15500031, 'mm': 0.0015500031 };
+        const volFactors = { 'in': 1, 'dec-in': 1, 'ft': 1728, 'dec-ft': 1728, 'yd': 46656, 'm': 61023.744, 'cm': 0.061023744, 'mm': 0.000061023744 };
+        const unitLabels = { 'in': 'in', 'dec-in': 'in', 'ft': 'ft', 'dec-ft': 'ft', 'yd': 'yd', 'm': 'm', 'cm': 'cm', 'mm': 'mm' };
 
         // --- Core String Parser ---
         function parseInputString(str) {
@@ -454,21 +462,22 @@
 
             let totalInches = 0;
             let isDim = false;
+            let isNegative = str.startsWith('-'); // Track global sign
 
             let s = str.replace(/ft/g, ' ft ').replace(/in/g, ' in ').replace(/\//g, ' / ').replace(/\s+/g, ' ').trim();
             let tokens = s.split(' ');
-            
+
             for (let i = 0; i < tokens.length; i++) {
                 let token = tokens[i];
                 if (!isNaN(parseFloat(token)) && token !== '/') {
-                    let val = parseFloat(token);
+                    let val = Math.abs(parseFloat(token)); // Force absolute value for accumulation
                     if (tokens[i+1] === 'ft') {
                         totalInches += val * 12; isDim = true; i++;
                     } else if (tokens[i+1] === 'in') {
                         totalInches += val; isDim = true; i++;
                     } else if (tokens[i+1] === '/') {
                         if (tokens[i+2] && !isNaN(parseFloat(tokens[i+2]))) {
-                            totalInches += val / parseFloat(tokens[i+2]);
+                            totalInches += val / Math.abs(parseFloat(tokens[i+2]));
                             isDim = true; i += 2;
                         }
                     } else {
@@ -476,7 +485,9 @@
                     }
                 }
             }
-            
+
+            if (isNegative) totalInches *= -1; // Apply the sign to the final total
+
             return { value: totalInches, type: 'linear', isDimensional: isDim };
         }
 
@@ -597,12 +608,23 @@
             }
             return String(displayFloat(val)); 
         }
+        
+        function adjustFontSize() {
+            displayValueElement.style.fontSize = '3.5rem'; 
+            let fontSize = 3.5;
+            // Reduce font size until it fits or hits minimum 1.5rem
+            while (displayValueElement.scrollWidth > displayValueElement.clientWidth && fontSize > 1.5) {
+                fontSize -= 0.1;
+                displayValueElement.style.fontSize = `${fontSize}rem`;
+            }
+        }
 
         function updateDisplay() {
             if (currentInputStr === "Error") {
                 displayValueElement.textContent = "Error";
                 displayDimensionalElement.textContent = "";
                 renderHistory();
+                adjustFontSize();
                 return;
             }
 
@@ -629,6 +651,7 @@
                 else displayDimensionalElement.textContent = "";
             }
             renderHistory();
+            adjustFontSize();
         }
 
         function renderHistory() {
@@ -697,7 +720,15 @@
                 let targetType = typeToConvert;
                 if (targetType === 'scalar') targetType = 'linear';
                 
-                currentDisplayUnit = unit;
+                // Toggle decimal formats for feet and inches
+                if (unit === 'ft') {
+                    currentDisplayUnit = currentDisplayUnit === 'dec-ft' ? null : 'dec-ft';
+                } else if (unit === 'in') {
+                    currentDisplayUnit = currentDisplayUnit === 'dec-in' ? null : 'dec-in';
+                } else {
+                    currentDisplayUnit = unit;
+                }
+                
                 currentResultType = targetType;
                 
                 let displayStr = formatValueDisplay(valToConvert, targetType, currentDisplayUnit);
@@ -709,7 +740,8 @@
             }
 
             if (currentDimensionMode !== 'linear') {
-                let val = isResultState ? currentResultBaseValue : parseFloat(currentInputStr);
+                // Updated from parseFloat to fully parse compound strings
+                let val = isResultState ? currentResultBaseValue : parseInputString(currentInputStr).value;
                 if (isNaN(val)) return;
                 
                 if (currentDimensionMode === 'area') {
@@ -764,10 +796,12 @@
 
         function handleOperator(op) {
             currentRoundDenomIndex = 0;
-            currentDisplayUnit = null; 
             
             let parsed = isResultState ? { value: currentResultBaseValue, type: currentResultType } : parseInputString(currentInputStr);
             let displayStr = formatValueDisplay(parsed.value, parsed.type, currentDisplayUnit);
+            
+            // Unit reset deliberately removed from here to preserve converted unit memory for the display
+            
             let sym = { 'add': '+', 'subtract': '-', 'multiply': '×', 'divide': '÷' }[op];
 
             // Setup Active Tape string for continuous inline math
@@ -799,7 +833,7 @@
             pendingConversion = false;
             
             updateDisplay();
-            renderHistory();
+            // renderHistory() and adjustFontSize() are automatically called inside updateDisplay
         }
 
         function handleEquals() {
