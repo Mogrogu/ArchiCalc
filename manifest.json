@@ -1,0 +1,21 @@
+{
+  "name": "ArchiCalc Beta",
+  "short_name": "ArchiCalc",
+  "description": "Architectural Dimensional Calculator",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "CalcIcon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "CalcIcon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
