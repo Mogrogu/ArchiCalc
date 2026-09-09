@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#f97316" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
 
-    <title>ArchiCalc Beta 1.3</title>
+    <title>ArchiCalc Beta 1.3.1</title>
     <link rel="icon" href="CalcIcon.png" onerror="this.href='https://placehold.co/16x16/f97316/ffffff?text=AC'">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f97316'%3E%3Cpath d='M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z'/%3E%3Cpath d='M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z'/%3E%3C/svg%3E" type="image/svg+xml">
     
@@ -680,7 +680,6 @@
         // --- Interaction Handlers ---
         function handleDigit(d) {
             currentRoundDenomIndex = 0; 
-            currentDisplayUnit = null;
             if (isResultState) { currentInputStr = d; isResultState = false; }
             else { currentInputStr = currentInputStr === "0" ? d : currentInputStr + d; }
             updateDisplay();
@@ -688,7 +687,6 @@
 
         function handleDecimal() {
             currentRoundDenomIndex = 0;
-            currentDisplayUnit = null;
             if (isResultState) { currentInputStr = "0."; isResultState = false; }
             else {
                 let tokens = currentInputStr.split(/[\s/a-z]+/);
@@ -699,7 +697,6 @@
 
         function handleBackspace() {
             currentRoundDenomIndex = 0;
-            currentDisplayUnit = null;
             if (isResultState) { currentInputStr = "0"; isResultState = false; }
             else if (currentInputStr.length > 0) {
                 currentInputStr = currentInputStr.slice(0, -1).trim();
@@ -837,12 +834,10 @@
             pendingConversion = false;
             
             updateDisplay();
-            // renderHistory() and adjustFontSize() are automatically called inside updateDisplay
         }
 
         function handleEquals() {
             currentRoundDenomIndex = 0;
-            currentDisplayUnit = null;
             let secondOp;
             let isRepeatedEquals = false;
 
@@ -876,12 +871,12 @@
             }
 
             let sym = { 'add': '+', 'subtract': '-', 'multiply': '×', 'divide': '÷' }[operator];
-            let secOpDisplay = formatValueDisplay(secondOp.value, secondOp.type);
-            let resDisplay = formatValueDisplay(result.value, result.type);
+            let secOpDisplay = formatValueDisplay(secondOp.value, secondOp.type, currentDisplayUnit);
+            let resDisplay = formatValueDisplay(result.value, result.type, currentDisplayUnit);
 
             // Finalize tape
             if (isRepeatedEquals || activeTapeStr === "") {
-                addHistory(`${formatValueDisplay(firstOperand, firstOperandType)} ${sym} ${secOpDisplay} = <strong>${resDisplay}</strong>`);
+                addHistory(`${formatValueDisplay(firstOperand, firstOperandType, currentDisplayUnit)} ${sym} ${secOpDisplay} = <strong>${resDisplay}</strong>`);
             } else {
                 addHistory(`${activeTapeStr} ${secOpDisplay} = <strong>${resDisplay}</strong>`);
                 activeTapeStr = ""; 
@@ -898,7 +893,7 @@
             currentInputStr = "0"; isResultState = false; firstOperand = null; 
             operator = null; lastOperator = null; pendingConversion = false;
             sqcuPressCount = 0; currentDimensionMode = 'linear';
-            currentRoundDenomIndex = 0; currentDisplayUnit = null;
+            currentRoundDenomIndex = 0; currentDisplayUnit = null; // Explicitly clears the sticky unit
             activeTapeStr = "";
             addHistory('------');
             updateDisplay();
