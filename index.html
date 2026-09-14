@@ -421,6 +421,16 @@
     </div>
 
     <script>
+        // --- Number Formatting Helper ---
+        function formatWithCommas(str) {
+            if (!str) return str;
+            return str.toString().replace(/\b\d+(?:\.\d+)?\b/g, match => {
+                let parts = match.split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return parts.length > 1 ? `${parts[0]}.${parts[1]}` : parts[0];
+            });
+        }
+
         // --- DOM Elements ---
         const historyTapeElement = document.getElementById('historyTape');
         const displayValueElement = document.getElementById('displayValue');
@@ -467,7 +477,7 @@
 
         // --- Core String Parser ---
         function parseInputString(str) {
-            str = str.toString().trim().toLowerCase();
+            str = str.toString().trim().toLowerCase().replace(/,/g, ''); // Strips commas before calculation
             if (!str || str === "0") return { value: 0, type: 'scalar', isDimensional: false };
 
             if (/^-?\d*\.?\d+$/.test(str)) {
@@ -564,7 +574,7 @@
                 if (parts.length === 0) return "0 in";
                 if (!parts.some(p => p.includes("ft"))) parts.push("in");
                 else if (remainingInches > 0) parts.push("in");
-                return sign + parts.join(' ').trim();
+                return formatWithCommas(sign + parts.join(' ').trim());
             }
 
             const wholeInches = Math.floor(remainingInches);
@@ -601,26 +611,30 @@
                 parts.push("in");
             }
 
-            return sign + parts.join(' ').trim() || "0";
+            return formatWithCommas(sign + parts.join(' ').trim() || "0");
         }
 
         function formatValueDisplay(val, type, displayBaseUnit = null) {
             val = cleanFloat(val);
+            let resultStr = "";
             if (type === 'area') {
                 let factor = displayBaseUnit ? areaFactors[displayBaseUnit] : areaFactors['ft'];
                 let lbl = displayBaseUnit ? `sq ${unitLabels[displayBaseUnit]}` : 'sq ft';
-                return `${displayFloat(val / factor)} ${lbl}`;
+                resultStr = `${displayFloat(val / factor)} ${lbl}`;
             } else if (type === 'volume') {
                 let factor = displayBaseUnit ? volFactors[displayBaseUnit] : volFactors['ft'];
                 let lbl = displayBaseUnit ? `cu ${unitLabels[displayBaseUnit]}` : 'cu ft';
-                return `${displayFloat(val / factor)} ${lbl}`;
+                resultStr = `${displayFloat(val / factor)} ${lbl}`;
             } else if (type === 'linear') {
                 if (displayBaseUnit && displayBaseUnit !== 'in' && displayBaseUnit !== 'ft') {
-                    return `${displayFloat(val / conversionFactors[displayBaseUnit])} ${unitLabels[displayBaseUnit]}`;
+                    resultStr = `${displayFloat(val / conversionFactors[displayBaseUnit])} ${unitLabels[displayBaseUnit]}`;
+                } else {
+                    return formatDimensional(val, roundDenominators[currentRoundDenomIndex]); 
                 }
-                return formatDimensional(val, roundDenominators[currentRoundDenomIndex]);
+            } else {
+                resultStr = String(displayFloat(val)); 
             }
-            return String(displayFloat(val)); 
+            return formatWithCommas(resultStr);
         }
         
         function adjustFontSize() {
@@ -654,14 +668,14 @@
                 else altDisplay = `${displayVal} in`;
                 
                 let roundLbl = currentRoundDenomIndex > 0 ? ` (Rnd 1/${roundDenominators[currentRoundDenomIndex] === 1 ? '1' : roundDenominators[currentRoundDenomIndex]})` : '';
-                displayDimensionalElement.textContent = `${altDisplay}${roundLbl}`;
+                displayDimensionalElement.textContent = formatWithCommas(`${altDisplay}${roundLbl}`);
             } else {
-                displayValueElement.textContent = currentInputStr;
+                displayValueElement.textContent = formatWithCommas(currentInputStr);
                 let parsed = parseInputString(currentInputStr);
                 
                 if (currentDimensionMode === 'area') displayDimensionalElement.textContent = "SQ Mode Active";
                 else if (currentDimensionMode === 'volume') displayDimensionalElement.textContent = "CU Mode Active";
-                else if (parsed.isDimensional) displayDimensionalElement.textContent = `${displayFloat(parsed.value)} in`;
+                else if (parsed.isDimensional) displayDimensionalElement.textContent = formatWithCommas(`${displayFloat(parsed.value)} in`);
                 else displayDimensionalElement.textContent = "";
             }
             renderHistory();
@@ -673,7 +687,7 @@
             if (activeTapeStr) {
                 let currentEntry = "";
                 if (!isResultState && currentInputStr !== "0" && currentInputStr !== "Error") {
-                    currentEntry = " " + currentInputStr;
+                    currentEntry = " " + formatWithCommas(currentInputStr);
                 }
                 html += `<div class="history-item" style="opacity: 0.6; font-style: italic;">${activeTapeStr}${currentEntry} ...</div>`;
             }
@@ -751,7 +765,6 @@
             }
 
             if (currentDimensionMode !== 'linear') {
-                // Updated from parseFloat to fully parse compound strings
                 let val = isResultState ? currentResultBaseValue : parseInputString(currentInputStr).value;
                 if (isNaN(val)) return;
                 
@@ -810,8 +823,6 @@
             
             let parsed = isResultState ? { value: currentResultBaseValue, type: currentResultType } : parseInputString(currentInputStr);
             let displayStr = formatValueDisplay(parsed.value, parsed.type, currentDisplayUnit);
-            
-            // Unit reset deliberately removed from here to preserve converted unit memory for the display
             
             let sym = { 'add': '+', 'subtract': '-', 'multiply': '×', 'divide': '÷' }[op];
 
@@ -961,6 +972,24 @@
                             updateDisplay();
                         }
                         break;
+                }
+            }
+        });
+
+        // --- Handle Paste Operations ---
+        window.addEventListener('paste', (event) => {
+            let paste = (event.clipboardData || window.clipboardData).getData('text');
+            if (paste) {
+                // Strip invalid characters but allow standard metrics, letters, numbers, signs, slashes, and spaces
+                let stripped = paste.replace(/,/g, '').replace(/[^0-9a-zA-Z./\s-]/g, '').trim();
+                if (stripped) {
+                    if (isResultState) {
+                        currentInputStr = stripped;
+                        isResultState = false;
+                    } else {
+                        currentInputStr = currentInputStr === "0" ? stripped : currentInputStr + stripped;
+                    }
+                    updateDisplay();
                 }
             }
         });
