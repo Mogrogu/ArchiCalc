@@ -1012,7 +1012,7 @@
             else if (key === 'Backspace') targetButton = calculatorButtons.querySelector('.btn[data-action="backspace"]');
             else if (key.toLowerCase() === 'c' && !event.ctrlKey && !event.metaKey) targetButton = calculatorButtons.querySelector('.btn[data-action="clear"]');
             else if (key === 'Escape') targetButton = calculatorButtons.querySelector('.btn[data-action="clear"]');
-            else if (key.toLowerCase() === 'v') targetButton = calculatorButtons.querySelector('.btn[data-action="convert"]');
+            else if (key.toLowerCase() === 'v' && !event.ctrlKey && !event.metaKey) targetButton = calculatorButtons.querySelector('.btn[data-action="convert"]');
             else if (key.toLowerCase() === 'u') targetButton = calculatorButtons.querySelector('.btn[data-action="sf-cu"]');
 
             if (targetButton) {
